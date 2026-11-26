@@ -1,0 +1,1407 @@
+:root {
+  --paper: #f5f7f9;
+  --ink: #17212f;
+  --muted: #526174;
+  --wine: #4b1a21;
+  --accent: #ce4e51;
+  --line: #e5e9ee;
+  --unit: min(1px, 100vw / 390);
+  color: var(--ink);
+  background: var(--paper);
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after { box-sizing: inherit; }
+body, p, h1 { margin: 0; }
+h1 { font-size: inherit; font-weight: inherit; }
+a { color: inherit; text-decoration: none; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
+
+@view-transition { navigation: auto; }
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 160ms;
+  animation-timing-function: ease-out;
+}
+
+@supports not (view-transition-name: root) {
+  .book-page { animation: page-enter 160ms ease-out; }
+}
+
+@keyframes page-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0s !important; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}
+
+/* Figma screen styles, shared across the program-book pages. */
+
+.program-page {
+  background-color: var(--paper);
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: calc(28 * var(--unit));
+  align-items: center;
+  padding-inline: calc(22 * var(--unit));
+  padding-block: calc(28 * var(--unit));
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.cover-layout {
+  align-content: stretch;
+  display: flex;
+  height: calc(716 * var(--unit));
+  align-items: flex-start;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.cover-content {
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: calc(14 * var(--unit));
+  height: calc(716 * var(--unit));
+  align-items: flex-start;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.copy {
+  overflow-wrap: anywhere;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: calc(10 * var(--unit));
+  white-space: nowrap;
+}
+
+.cover-rule {
+  background-color: var(--wine);
+  height: 1px;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(286 * var(--unit));
+}
+
+.cover-heading {
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  height: calc(63 * var(--unit));
+  align-items: flex-start;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(286 * var(--unit));
+}
+
+.copy-2 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Serif KR", "Batang", serif;
+  font-weight: 700;
+  line-height: 1.5;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--ink);
+  font-size: calc(42 * var(--unit));
+  width: calc(286 * var(--unit));
+}
+
+.motion-poster {
+  background-color: var(--ink);
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: calc(12 * var(--unit));
+  height: calc(542 * var(--unit));
+  align-items: center;
+  justify-content: center;
+  padding-inline: calc(20 * var(--unit));
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.layout {
+  background-color: var(--accent);
+  height: calc(2 * var(--unit));
+  position: relative;
+  flex-shrink: 0;
+  width: calc(40 * var(--unit));
+}
+
+.copy-3 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--paper);
+  font-size: calc(13 * var(--unit));
+  text-align: center;
+  width: calc(246 * var(--unit));
+}
+
+.pagination {
+  align-content: stretch;
+  display: flex;
+  gap: calc(8 * var(--unit));
+  height: calc(44 * var(--unit));
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.page-link {
+  border-width: 1px;
+  border-color: #d5dde5;
+  border-style: solid;
+  align-content: stretch;
+  cursor: pointer;
+  display: flex;
+  height: calc(44 * var(--unit));
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding-bottom: calc(8 * var(--unit));
+  padding-top: calc(12 * var(--unit));
+  padding-inline: calc(7 * var(--unit));
+  position: relative;
+  flex-shrink: 0;
+  width: calc(108 * var(--unit));
+}
+
+.copy-4 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 700;
+  height: calc(20 * var(--unit));
+  line-height: normal;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--ink);
+  font-size: calc(12 * var(--unit));
+  text-align: center;
+  width: calc(94 * var(--unit));
+}
+
+.page-counter {
+  align-content: stretch;
+  display: flex;
+  height: calc(44 * var(--unit));
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding-bottom: calc(8 * var(--unit));
+  padding-top: calc(12 * var(--unit));
+  padding-inline: calc(7 * var(--unit));
+  position: relative;
+  border-radius: calc(6 * var(--unit));
+  flex-shrink: 0;
+  width: calc(114 * var(--unit));
+}
+
+.copy-5 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 700;
+  height: calc(20 * var(--unit));
+  line-height: normal;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--wine);
+  font-size: calc(12 * var(--unit));
+  text-align: center;
+  width: calc(96 * var(--unit));
+}
+
+.program-page-2 {
+  background-color: var(--paper);
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: calc(17 * var(--unit));
+  align-items: center;
+  padding-bottom: calc(25 * var(--unit));
+  padding-top: calc(24 * var(--unit));
+  padding-inline: calc(22 * var(--unit));
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.chapter-header {
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  height: calc(66 * var(--unit));
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.editorial-header {
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: calc(11 * var(--unit));
+  height: calc(64 * var(--unit));
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.heading-rule {
+  background-color: var(--line);
+  height: 1px;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.heading-layout {
+  align-content: stretch;
+  display: flex;
+  gap: calc(15 * var(--unit));
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.heading-accent {
+  background-color: var(--wine);
+  height: calc(80 * var(--unit));
+  position: relative;
+  flex-shrink: 0;
+  width: calc(3 * var(--unit));
+}
+
+.heading-group {
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(328 * var(--unit));
+}
+
+.copy-6 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 700;
+  line-height: normal;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--ink);
+  font-size: calc(26 * var(--unit));
+  width: calc(324 * var(--unit));
+}
+
+.heading-footer {
+  align-content: stretch;
+  display: flex;
+  height: calc(3 * var(--unit));
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.heading-footer-accent {
+  background-color: var(--accent);
+  height: calc(3 * var(--unit));
+  position: relative;
+  flex-shrink: 0;
+  width: calc(47 * var(--unit));
+}
+
+.heading-footer-line {
+  background-color: var(--line);
+  height: 1px;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(299 * var(--unit));
+}
+
+.section-rule {
+  align-content: stretch;
+  display: flex;
+  height: calc(2 * var(--unit));
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.section-rule-accent {
+  background-color: var(--wine);
+  height: calc(2 * var(--unit));
+  position: relative;
+  flex-shrink: 0;
+  width: calc(46 * var(--unit));
+}
+
+.section-rule-line {
+  background-color: var(--line);
+  height: 1px;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(300 * var(--unit));
+}
+
+.chapter-content {
+  overflow-wrap: anywhere;
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  font-weight: 400;
+  gap: calc(10 * var(--unit));
+  align-items: flex-start;
+  line-height: normal;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  font-size: calc(12 * var(--unit));
+}
+
+.contents-link {
+  background-color: var(--paper);
+  border-width: 1px;
+  border-color: var(--line);
+  border-style: solid;
+  align-content: stretch;
+  cursor: pointer;
+  display: flex;
+  gap: calc(9 * var(--unit));
+  height: calc(48 * var(--unit));
+  align-items: flex-start;
+  overflow: hidden;
+  padding-inline: calc(13 * var(--unit));
+  padding-block: calc(10 * var(--unit));
+  position: relative;
+  flex-shrink: 0;
+  text-align: left;
+  width: calc(346 * var(--unit));
+}
+
+.copy-7 {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--wine);
+  width: calc(28 * var(--unit));
+}
+
+.copy-8 {
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--ink);
+  width: calc(265 * var(--unit));
+}
+
+.contents-link-2 {
+  background-color: var(--paper);
+  border-width: 1px;
+  border-color: var(--line);
+  border-style: solid;
+  align-content: stretch;
+  display: flex;
+  gap: calc(9 * var(--unit));
+  height: calc(48 * var(--unit));
+  align-items: flex-start;
+  overflow: hidden;
+  padding-inline: calc(13 * var(--unit));
+  padding-block: calc(10 * var(--unit));
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.contents-link-3 {
+  background-color: var(--paper);
+  border-width: 1px;
+  border-color: var(--line);
+  border-style: solid;
+  align-content: stretch;
+  cursor: pointer;
+  display: flex;
+  gap: calc(9 * var(--unit));
+  height: calc(48 * var(--unit));
+  align-items: center;
+  overflow: hidden;
+  padding-inline: calc(13 * var(--unit));
+  padding-block: calc(10 * var(--unit));
+  position: relative;
+  flex-shrink: 0;
+  text-align: left;
+  width: calc(346 * var(--unit));
+}
+
+.chapter-divider {
+  background-color: #d5dde5;
+  height: 1px;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.page-link-2 {
+  background-color: var(--paper);
+  border-width: 1px;
+  border-color: #a6b0bc;
+  border-style: solid;
+  align-content: stretch;
+  cursor: pointer;
+  display: flex;
+  height: calc(44 * var(--unit));
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding-bottom: calc(8 * var(--unit));
+  padding-top: calc(12 * var(--unit));
+  padding-inline: calc(7 * var(--unit));
+  position: relative;
+  flex-shrink: 0;
+  width: calc(108 * var(--unit));
+}
+
+.page-counter-2 {
+  align-content: stretch;
+  display: flex;
+  height: calc(44 * var(--unit));
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding-bottom: calc(8 * var(--unit));
+  padding-top: calc(12 * var(--unit));
+  padding-inline: calc(7 * var(--unit));
+  position: relative;
+  flex-shrink: 0;
+  width: calc(114 * var(--unit));
+}
+
+.editorial-header-2 {
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: calc(11 * var(--unit));
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.heading-layout-2 {
+  align-content: stretch;
+  display: flex;
+  gap: calc(15 * var(--unit));
+  height: calc(87 * var(--unit));
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.heading-group-2 {
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  height: calc(80 * var(--unit));
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(328 * var(--unit));
+}
+
+.chapter-content-2 {
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: calc(18 * var(--unit));
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.layout-2 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Serif KR", "Batang", serif;
+  font-weight: 700;
+  line-height: 0;
+  position: relative;
+  flex-shrink: 0;
+  color: #141e2e;
+  font-size: calc(19 * var(--unit));
+  width: calc(346 * var(--unit));
+}
+
+.copy-9 {
+  line-height: normal;
+  margin-bottom: 0;
+}
+
+.copy-10 {
+  line-height: normal;
+}
+
+.copy-11 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: calc(14 * var(--unit));
+  width: calc(346 * var(--unit));
+}
+
+.chapter-header-2 {
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.editorial-header-3 {
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: calc(11 * var(--unit));
+  height: calc(66 * var(--unit));
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.layout-3 {
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: calc(15 * var(--unit));
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.copy-12 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 700;
+  line-height: normal;
+  position: relative;
+  flex-shrink: 0;
+  font-size: calc(11 * var(--unit));
+  color: #752940;
+  width: calc(103 * var(--unit));
+}
+
+.layout-4 {
+  align-content: stretch;
+  display: flex;
+  gap: calc(12 * var(--unit));
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.character-card {
+  background-color: white;
+  border-width: 1px;
+  border-color: var(--line);
+  border-style: solid;
+  height: calc(160 * var(--unit));
+  position: relative;
+  flex-shrink: 0;
+  width: calc(167 * var(--unit));
+}
+
+.layout-5 {
+  position: absolute;
+  background-color: var(--wine);
+  height: calc(160 * var(--unit));
+  left: calc(-1 * var(--unit));
+  top: calc(-1 * var(--unit));
+  width: calc(3 * var(--unit));
+}
+
+.copy-13 {
+  overflow-wrap: anywhere;
+  position: absolute;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 400;
+  line-height: normal;
+  left: calc(15 * var(--unit));
+  font-size: calc(10 * var(--unit));
+  color: #752940;
+  top: calc(17 * var(--unit));
+  width: calc(70 * var(--unit));
+}
+
+.copy-14 {
+  overflow-wrap: anywhere;
+  position: absolute;
+  font-family: "Noto Serif KR", "Batang", serif;
+  font-weight: 700;
+  line-height: normal;
+  left: calc(15 * var(--unit));
+  font-size: calc(22 * var(--unit));
+  color: #141e2e;
+  top: calc(46 * var(--unit));
+  width: calc(91 * var(--unit));
+}
+
+.layout-6 {
+  position: absolute;
+  background-color: var(--line);
+  height: 1px;
+  left: calc(15 * var(--unit));
+  top: calc(83 * var(--unit));
+  width: calc(122 * var(--unit));
+}
+
+.copy-15 {
+  overflow-wrap: anywhere;
+  position: absolute;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 400;
+  line-height: normal;
+  left: calc(15 * var(--unit));
+  font-size: calc(12 * var(--unit));
+  color: var(--muted);
+  top: calc(93 * var(--unit));
+  width: calc(49 * var(--unit));
+}
+
+.copy-16 {
+  overflow-wrap: anywhere;
+  position: absolute;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 400;
+  line-height: normal;
+  left: calc(15 * var(--unit));
+  font-size: calc(11 * var(--unit));
+  color: var(--muted);
+  top: calc(123 * var(--unit));
+  width: calc(43 * var(--unit));
+}
+
+.layout-7 {
+  overflow-wrap: anywhere;
+  background-color: var(--line);
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: calc(7 * var(--unit));
+  align-items: flex-start;
+  line-height: normal;
+  overflow: hidden;
+  padding-inline: calc(16 * var(--unit));
+  padding-block: calc(14 * var(--unit));
+  position: relative;
+  flex-shrink: 0;
+  font-size: calc(12 * var(--unit));
+  width: calc(346 * var(--unit));
+}
+
+.copy-17 {
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 700;
+  position: relative;
+  flex-shrink: 0;
+  color: #141e2e;
+  width: calc(47 * var(--unit));
+}
+
+.copy-18 {
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 400;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--muted);
+  width: calc(205 * var(--unit));
+}
+
+.copy-19 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 700;
+  line-height: normal;
+  position: relative;
+  flex-shrink: 0;
+  font-size: calc(11 * var(--unit));
+  color: #752940;
+  width: calc(127 * var(--unit));
+}
+
+.layout-8 {
+  overflow-wrap: anywhere;
+  border-width: 1px;
+  border-color: var(--line);
+  border-style: solid;
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: calc(11 * var(--unit));
+  align-items: flex-start;
+  line-height: normal;
+  overflow: hidden;
+  padding-inline: calc(16 * var(--unit));
+  padding-block: calc(17 * var(--unit));
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.copy-20 {
+  font-family: "Noto Serif KR", "Batang", serif;
+  font-weight: 700;
+  position: relative;
+  flex-shrink: 0;
+  font-size: calc(15 * var(--unit));
+  color: #141e2e;
+  width: calc(124 * var(--unit));
+}
+
+.copy-21 {
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 400;
+  position: relative;
+  flex-shrink: 0;
+  font-size: calc(12 * var(--unit));
+  color: var(--muted);
+  width: calc(271 * var(--unit));
+}
+
+.copy-22 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  flex-shrink: 0;
+  font-size: calc(11 * var(--unit));
+  color: var(--muted);
+  width: calc(224 * var(--unit));
+}
+
+.copy-23 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Serif KR", "Batang", serif;
+  font-weight: 700;
+  line-height: normal;
+  position: relative;
+  flex-shrink: 0;
+  color: #141e2e;
+  font-size: calc(19 * var(--unit));
+  width: calc(346 * var(--unit));
+}
+
+.heading-layout-3 {
+  align-content: stretch;
+  display: flex;
+  gap: calc(15 * var(--unit));
+  height: calc(66 * var(--unit));
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.copy-24 {
+  overflow-wrap: anywhere;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  flex-shrink: 0;
+  color: #752940;
+  font-size: calc(15 * var(--unit));
+  width: calc(346 * var(--unit));
+}
+
+.copy-25 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: calc(12 * var(--unit));
+  width: calc(346 * var(--unit));
+}
+
+.layout-9 {
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: calc(9 * var(--unit));
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.number-card {
+  overflow-wrap: anywhere;
+  background-color: white;
+  border-width: 1px;
+  border-color: var(--line);
+  border-style: solid;
+  align-content: stretch;
+  display: flex;
+  gap: calc(14 * var(--unit));
+  height: calc(60 * var(--unit));
+  align-items: center;
+  line-height: normal;
+  padding-left: calc(13 * var(--unit));
+  padding-right: calc(12 * var(--unit));
+  padding-block: calc(11 * var(--unit));
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.copy-26 {
+  font-family: "Noto Serif KR", "Batang", serif;
+  font-weight: 700;
+  height: calc(27 * var(--unit));
+  position: relative;
+  flex-shrink: 0;
+  font-size: calc(19 * var(--unit));
+  color: #752940;
+  width: calc(36 * var(--unit));
+}
+
+.layout-10 {
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: calc(3 * var(--unit));
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(265 * var(--unit));
+}
+
+.copy-27 {
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 700;
+  position: relative;
+  flex-shrink: 0;
+  font-size: calc(13 * var(--unit));
+  color: #141e2e;
+  width: calc(78 * var(--unit));
+}
+
+.copy-28 {
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 400;
+  position: relative;
+  flex-shrink: 0;
+  font-size: calc(11 * var(--unit));
+  color: var(--muted);
+  width: calc(96 * var(--unit));
+}
+
+.copy-29 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  flex-shrink: 0;
+  font-size: calc(11 * var(--unit));
+  color: var(--muted);
+  width: calc(243 * var(--unit));
+}
+
+.heading-accent-2 {
+  background-color: var(--wine);
+  height: calc(80 * var(--unit));
+  position: relative;
+  flex-shrink: 0;
+  width: calc(5 * var(--unit));
+}
+
+.heading-group-3 {
+  overflow-wrap: anywhere;
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: calc(3 * var(--unit));
+  height: calc(80 * var(--unit));
+  align-items: flex-start;
+  line-height: normal;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(324 * var(--unit));
+}
+
+.copy-30 {
+  font-family: Inter, sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--accent);
+  font-size: calc(10 * var(--unit));
+  width: calc(316 * var(--unit));
+  white-space: pre-wrap;
+}
+
+.copy-31 {
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 700;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--ink);
+  font-size: calc(26 * var(--unit));
+  width: calc(324 * var(--unit));
+}
+
+.portrait-frame {
+  border-width: 1px;
+  border-color: rgba(166,176,188,0.6);
+  border-style: solid;
+  height: calc(433 * var(--unit));
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.portrait-image {
+  position: absolute;
+  inset: 0;
+  max-width: none;
+  object-fit: cover;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+}
+
+.copy-32 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Serif KR", "Batang", serif;
+  font-weight: 700;
+  line-height: normal;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--ink);
+  font-size: calc(27 * var(--unit));
+  width: calc(346 * var(--unit));
+}
+
+.copy-33 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: calc(13 * var(--unit));
+  width: calc(346 * var(--unit));
+}
+
+.layout-11 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 400;
+  line-height: 0;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: calc(14 * var(--unit));
+  width: calc(346 * var(--unit));
+}
+
+.heading-group-4 {
+  overflow-wrap: anywhere;
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: calc(3 * var(--unit));
+  height: calc(80 * var(--unit));
+  align-items: flex-start;
+  line-height: normal;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(328 * var(--unit));
+}
+
+.layout-12 {
+  background-color: var(--line);
+  border-width: 1px;
+  border-color: rgba(166,176,188,0.6);
+  border-style: solid;
+  height: calc(245 * var(--unit));
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.layout-13 {
+  position: absolute;
+  background-color: #b83e4e;
+  height: calc(2 * var(--unit));
+  left: calc(19 * var(--unit));
+  top: calc(23 * var(--unit));
+  width: calc(72 * var(--unit));
+}
+
+.copy-34 {
+  overflow-wrap: anywhere;
+  position: absolute;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 700;
+  line-height: normal;
+  left: calc(19 * var(--unit));
+  color: var(--muted);
+  font-size: calc(13 * var(--unit));
+  top: calc(186 * var(--unit));
+  width: calc(306 * var(--unit));
+}
+
+.copy-35 {
+  overflow-wrap: anywhere;
+  position: absolute;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 400;
+  line-height: normal;
+  left: calc(19 * var(--unit));
+  color: var(--muted);
+  font-size: calc(11 * var(--unit));
+  top: calc(209 * var(--unit));
+  width: calc(306 * var(--unit));
+}
+
+.copy-36 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Serif KR", "Batang", serif;
+  font-weight: 700;
+  line-height: normal;
+  position: relative;
+  flex-shrink: 0;
+  color: #141e2e;
+  font-size: calc(21 * var(--unit));
+  width: calc(346 * var(--unit));
+}
+
+.layout-14 {
+  background-color: var(--line);
+  border-width: 1px;
+  border-color: rgba(166,176,188,0.6);
+  border-style: solid;
+  height: calc(240 * var(--unit));
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.copy-37 {
+  overflow-wrap: anywhere;
+  position: absolute;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 700;
+  line-height: normal;
+  left: calc(19 * var(--unit));
+  color: var(--muted);
+  font-size: calc(13 * var(--unit));
+  top: calc(181 * var(--unit));
+  width: calc(306 * var(--unit));
+}
+
+.copy-38 {
+  overflow-wrap: anywhere;
+  position: absolute;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 400;
+  line-height: normal;
+  left: calc(19 * var(--unit));
+  color: var(--muted);
+  font-size: calc(11 * var(--unit));
+  top: calc(204 * var(--unit));
+  width: calc(306 * var(--unit));
+}
+
+.copy-39 {
+  overflow-wrap: anywhere;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  flex-shrink: 0;
+  color: #752940;
+  font-size: calc(12 * var(--unit));
+  width: calc(346 * var(--unit));
+}
+
+.layout-15 {
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: calc(6 * var(--unit));
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.copy-40 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 700;
+  line-height: normal;
+  position: relative;
+  flex-shrink: 0;
+  color: #b83e4e;
+  font-size: calc(12 * var(--unit));
+  width: calc(346 * var(--unit));
+}
+
+.copy-41 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 400;
+  line-height: normal;
+  position: relative;
+  flex-shrink: 0;
+  color: #141e2e;
+  font-size: calc(16 * var(--unit));
+  width: calc(346 * var(--unit));
+}
+
+.layout-16 {
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: calc(18 * var(--unit));
+  height: calc(716 * var(--unit));
+  align-items: flex-start;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.copy-42 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 700;
+  line-height: 1.5;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--wine);
+  font-size: calc(11 * var(--unit));
+  width: calc(346 * var(--unit));
+}
+
+.layout-17 {
+  height: calc(106 * var(--unit));
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.layout-18 {
+  position: absolute;
+  background-color: var(--wine);
+  height: 1px;
+  left: 0;
+  top: 0;
+  width: calc(274 * var(--unit));
+}
+
+.layout-19 {
+  position: absolute;
+  background-color: var(--wine);
+  height: calc(106 * var(--unit));
+  left: 0;
+  top: 0;
+  width: 1px;
+}
+
+.layout-20 {
+  position: absolute;
+  background-color: var(--wine);
+  height: 1px;
+  left: 0;
+  top: calc(105 * var(--unit));
+  width: calc(346 * var(--unit));
+}
+
+.layout-21 {
+  position: absolute;
+  background-color: var(--accent);
+  height: calc(3 * var(--unit));
+  left: calc(300 * var(--unit));
+  top: calc(103 * var(--unit));
+  width: calc(46 * var(--unit));
+}
+
+.copy-43 {
+  overflow-wrap: anywhere;
+  position: absolute;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 700;
+  line-height: 1.5;
+  left: calc(18 * var(--unit));
+  color: var(--ink);
+  font-size: calc(25 * var(--unit));
+  top: calc(24 * var(--unit));
+  width: calc(304 * var(--unit));
+}
+
+.copy-44 {
+  overflow-wrap: anywhere;
+  position: absolute;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  left: calc(18 * var(--unit));
+  color: var(--muted);
+  font-size: calc(12 * var(--unit));
+  top: calc(66 * var(--unit));
+  width: calc(304 * var(--unit));
+}
+
+.motion-poster-2 {
+  background-color: var(--ink);
+  align-content: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: calc(12 * var(--unit));
+  height: calc(420 * var(--unit));
+  align-items: center;
+  justify-content: center;
+  padding-inline: calc(20 * var(--unit));
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.copy-45 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--paper);
+  font-size: calc(13 * var(--unit));
+  text-align: center;
+  width: calc(306 * var(--unit));
+}
+
+.copy-46 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 700;
+  line-height: 1.5;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--ink);
+  font-size: calc(17 * var(--unit));
+  width: calc(346 * var(--unit));
+}
+
+.epilogue-label {
+  align-content: stretch;
+  display: flex;
+  height: calc(36 * var(--unit));
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(346 * var(--unit));
+}
+
+.copy-47 {
+  overflow-wrap: anywhere;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 700;
+  line-height: 1.5;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--wine);
+  font-size: calc(10 * var(--unit));
+  width: calc(260 * var(--unit));
+}
+
+.layout-22 {
+  background-color: var(--accent);
+  height: calc(2 * var(--unit));
+  position: relative;
+  flex-shrink: 0;
+  width: calc(46 * var(--unit));
+}
+
+.book-page {
+  width: min(100%, 390px);
+  height: auto;
+  margin-inline: auto;
+}
+
+.book-pagination {
+  display: grid;
+  grid-template-columns: 108fr 114fr 108fr;
+}
+
+.book-page-link { width: auto; }
+
+@media (max-width: 389px) {
+  .book-page-link { min-width: 0; }
+}
