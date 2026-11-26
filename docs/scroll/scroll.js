@@ -33,7 +33,7 @@ function updateReveal() {
       const layoutTop = reveal.element.getBoundingClientRect().top - reveal.offset;
       const distance = bottom - layoutTop;
       // Complete the reveal at the document end, even if a block is close to the footer.
-      const range = Math.min(height * 0.44, distance + remainingScroll);
+      const range = Math.min(height * 0.75, distance + remainingScroll);
       const progress = distance <= 0 ? 0 : Math.min(1, distance / range);
       if (progress !== reveal.progress) changes.push({ reveal, progress });
     }

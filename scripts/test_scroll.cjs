@@ -38,16 +38,20 @@ async function testPhone(browser, device) {
     assert.ok(nearEdge.visible && nearEdge.opacity < 0.45 && nearEdge.offset > 26,
       `${device}: heading must look visibly faded and lowered while held near the bottom: ${JSON.stringify(nearEdge)}`);
 
-    await position(page, heading, 0.7);
+    await position(page, heading, 0.5);
     const halfway = await heading.evaluate(sample);
     const bodyHalfway = await content.evaluate(sample);
-    assert.ok(halfway.opacity > nearEdge.opacity + 0.2 && halfway.offset < nearEdge.offset - 12,
-      `${device}: heading should become clearer and move upward with the scroll`);
+    assert.ok(halfway.opacity > nearEdge.opacity + 0.2 && halfway.opacity < 0.9 && halfway.offset > 8,
+      `${device}: heading should be visibly mid-transition at halfway: ${JSON.stringify(halfway)}`);
     assert.ok(bodyHalfway.opacity < halfway.opacity && bodyHalfway.offset > halfway.offset,
       `${device}: the later body block should follow the heading`);
 
-    await position(page, heading, 0.4);
+    await position(page, heading, 0.3);
+    assert.ok((await heading.evaluate(sample)).opacity < 0.995,
+      `${device}: heading should still be transitioning after traveling 70% of the viewport`);
+    await position(page, heading, 0.248);
     assert.equal((await heading.evaluate(sample)).opacity, 1);
+    await position(page, content, 0.248);
     assert.equal((await content.evaluate(sample)).offset, 0);
 
     await position(page, heading, 0.86);
@@ -59,11 +63,12 @@ async function testPhone(browser, device) {
     const swipe = await page.evaluate(() => ({
       startScroll: scrollY,
       x: innerWidth / 2,
-      y: Math.round(innerHeight * 0.8)
+      y: Math.round(innerHeight * 0.8),
+      distance: innerHeight * 0.7
     }));
     await session.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: swipe.x, y: swipe.y }] });
     const swipeFrames = [];
-    for (let distance = 24; distance <= 312; distance += 24) {
+    for (let distance = 24; distance <= swipe.distance; distance += 24) {
       await session.send('Input.dispatchTouchEvent', {
         type: 'touchMove', touchPoints: [{ x: swipe.x, y: swipe.y - distance }]
       });
@@ -98,7 +103,7 @@ async function testPhone(browser, device) {
     assert.equal((await endLabel.evaluate(sample)).offset, 0);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), page.viewportSize().width);
     assert.deepEqual(errors, []);
-    console.log(`${device}: visible frames ${nearEdge.opacity.toFixed(2)} → ${halfway.opacity.toFixed(2)} → 1; touch swipe, reverse scroll, reduced motion, and profile link passed`);
+    console.log(`${device}: opacity ${halfway.opacity.toFixed(2)} at halfway, 1 at three quarters; touch swipe, reverse scroll, reduced motion, and profile link passed`);
   } finally {
     await context.close();
   }
