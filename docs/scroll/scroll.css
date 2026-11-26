@@ -1,0 +1,61 @@
+html {
+  scroll-snap-type: y proximity;
+}
+
+h2 {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.book-page {
+  min-height: 100svh;
+  scroll-snap-align: start;
+  animation: none;
+}
+
+.book-page + .book-page {
+  border-top: 1px solid var(--line);
+}
+
+#page-01 .cover-layout,
+#page-01 .cover-content,
+#page-31 .layout-16 {
+  height: auto;
+}
+
+#page-01 .motion-poster {
+  height: clamp(calc(240 * var(--unit)), calc(100svh - 235px), calc(542 * var(--unit)));
+}
+
+.scroll-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: auto;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.scroll-folio {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.scroll-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65em;
+  min-height: 44px;
+  color: var(--wine);
+  font-weight: 700;
+}
+
+#page-01 .scroll-action {
+  margin-inline: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-snap-type: none; }
+}
