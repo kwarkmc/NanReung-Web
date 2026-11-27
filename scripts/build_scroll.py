@@ -20,7 +20,7 @@ def versioned_asset(name):
 def build():
     opening = (DOCS / PAGES[0]).read_text(encoding="utf-8")
     head = opening.split("</head>", 1)[0]
-    head = head.replace("오프닝 | 뮤지컬 〈난릉〉", "뮤지컬 〈난릉〉 웹 프로그램북")
+    head = re.sub(r"<title>[^<]*</title>", "<title>뮤지컬 〈난릉〉 웹 프로그램북</title>", head, count=1)
     head = head.replace('href="styles.css"', 'href="../styles.css"')
     sections = []
 

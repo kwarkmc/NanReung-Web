@@ -15,7 +15,8 @@ function imageDecoded(image) {
 }
 
 async function testCasting(browser, device) {
-  const context = await browser.newContext(devices[device]);
+  const dimensions = device === "Compact 320×480" ? { ...devices["iPhone 13"], viewport: { width: 320, height: 480 } } : devices[device];
+  const context = await browser.newContext(dimensions);
   try {
     const page = await context.newPage();
     const errors = [];
@@ -26,11 +27,24 @@ async function testCasting(browser, device) {
     const dialog = page.getByRole("dialog");
 
     for (const [index, number] of grid.entries()) {
-      assert.deepEqual(await imageDecoded(cards.nth(index).locator("img")), { width: 62, height: 82 });
+      assert.deepEqual(await imageDecoded(cards.nth(index).locator("img")), { width: 248, height: 328 });
       await cards.nth(index).tap();
       const actor = cast[number - 1];
       assert.equal(await dialog.getByRole("heading").innerText(), actor.name);
-      assert.deepEqual(await imageDecoded(dialog.locator(".cast-detail:visible img")), { width: 302, height: 282 });
+      const photo = dialog.locator(".cast-detail:visible img");
+      const { width, height } = await imageDecoded(photo);
+      assert.ok(width >= 1100 && height >= 1480);
+      const fit = await photo.evaluate(element => {
+        const dialog = element.closest("dialog");
+        const bounds = element.getBoundingClientRect();
+        const controls = dialog.querySelector("nav").getBoundingClientRect();
+        return {
+          containsPhoto: getComputedStyle(element).objectFit === "contain",
+          visible: bounds.height > 0 && controls.bottom <= innerHeight && bounds.bottom <= controls.top,
+          noScroll: dialog.scrollHeight <= dialog.clientHeight + 1
+        };
+      });
+      assert.deepEqual(fit, { containsPhoto: true, visible: true, noScroll: true }, device + " " + actor.name);
       await dialog.getByRole("button", { name: "프로필 닫기" }).tap();
       assert.equal(await dialog.count(), 0);
     }
@@ -81,7 +95,7 @@ async function testCasting(browser, device) {
 (async () => {
   const browser = await chromium.launch({ executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE });
   try {
-    for (const face of ["iPhone 13", "Pixel 7"]) await testCasting(browser, face);
+    for (const face of ["iPhone 13", "Pixel 7", "Compact 320×480"]) await testCasting(browser, face);
   } finally {
     await browser.close();
   }

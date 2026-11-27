@@ -46,4 +46,6 @@ node scripts/test_casting.cjs
 
 ## 배포
 
+Figma 동기화 시 보존할 웹 변경과 배우별 사진 매핑은 [웹과 Figma 동기화](WEB_OVERRIDES.md)에 기록합니다.
+
 `docs/`를 정적 호스팅의 공개 디렉터리로 사용합니다. Figma 원본의 임시 에셋 주소는 배포 파일에 포함하지 않습니다. 오프닝과 엔딩 영상, 연습 사진, 일부 본문은 Figma의 자리표시자를 반영합니다.

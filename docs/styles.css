@@ -577,6 +577,22 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
   line-height: normal;
 }
 
+.book-prose {
+  display: grid;
+  gap: 0.9em;
+  width: calc(346 * var(--unit));
+  color: var(--muted);
+  font-size: calc(13 * var(--unit));
+  line-height: 1.45;
+}
+
+.book-prose ul {
+  margin: 0;
+  padding-inline-start: 1.15em;
+}
+
+h2.copy-23 { margin: 0; }
+
 .copy-11 {
   overflow-wrap: anywhere;
   font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;

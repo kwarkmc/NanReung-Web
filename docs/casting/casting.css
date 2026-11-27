@@ -171,12 +171,35 @@ body, h1, h2, p { margin: 0; }
 
 .casting-dialog {
   width: min(calc(100% - 32px), 342px);
-  max-height: calc(100% - 24px);
-  min-height: min(622px, calc(100% - 24px));
+  height: min(760px, calc(100dvh - 24px));
+  max-height: none;
+  min-height: 0;
   margin: auto;
   overflow-y: auto;
   overscroll-behavior: contain;
 }
+
+.casting-dialog[open] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+.casting-dialog .cast-detail:not([hidden]) {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-height: 0;
+}
+
+.casting-dialog .cast-portrait {
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+}
+
+.casting-dialog .cast-copy { gap: 8px; }
+.casting-dialog .cast-identity::before { margin-bottom: 5px; }
+.casting-dialog .cast-description { min-height: 0; padding-top: 8px; }
+.casting-dialog .cast-pagination { margin-top: 10px; }
 
 .casting-dialog::backdrop,
 .cast-scene {
@@ -229,9 +252,9 @@ html:has(.casting-dialog[open]) { overflow: hidden; }
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 302 / 282;
+  aspect-ratio: 4 / 5;
   border-radius: 5px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .cast-copy {

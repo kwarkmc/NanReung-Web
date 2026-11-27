@@ -31,8 +31,10 @@ async function testPhone(browser, device) {
     assert.ok(response.ok(), `${device}: preview HTTP ${response.status()}`);
     assert.equal(await page.locator('main > .book-page').count(), 31);
 
-    const heading = page.locator('#page-03 .chapter-header');
-    const content = page.locator('#page-03 .layout-2');
+    assert.match(await page.locator('#page-03').innerText(), /관람 전 안내/);
+    assert.match(await page.locator('#page-06').innerText(), /가면 속 두 남자/);
+    const heading = page.locator('#page-04 .chapter-header');
+    const content = page.locator('#page-04 .layout-2');
     await position(page, heading, 0.86);
     const nearEdge = await heading.evaluate(sample);
     assert.ok(nearEdge.visible && nearEdge.opacity < 0.45 && nearEdge.offset > 26,
@@ -81,7 +83,7 @@ async function testPhone(browser, device) {
     assert.ok(swipeFrames.some((opacity) => opacity > nearEdge.opacity + 0.12 && opacity < 0.95),
       `${device}: touch swipe should show an intermediate frame: ${swipeFrames}`);
 
-    await page.waitForFunction(() => getComputedStyle(document.querySelector('#page-03 .chapter-header')).opacity === '1',
+    await page.waitForFunction(() => getComputedStyle(document.querySelector('#page-04 .chapter-header')).opacity === '1',
       undefined, { timeout: 2500 });
     await position(page, heading, 0.86);
     await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -89,10 +91,11 @@ async function testPhone(browser, device) {
     assert.equal((await heading.evaluate(sample)).offset, 0);
     await page.emulateMedia({ reducedMotion: 'no-preference' });
 
+    await page.goto(url, { waitUntil: 'domcontentloaded' });
     const portraitLink = page.locator('#page-02 a[href="#page-08"]');
     await portraitLink.tap();
-    await page.waitForURL(/#page-08$/);
-    await page.waitForFunction(() => document.querySelector('#page-08 img').naturalWidth > 0);
+    await page.waitForURL(/#page-08$/, { waitUntil: 'commit' });
+    await page.waitForFunction(() => document.querySelector('#page-08 img').naturalWidth >= 1100);
 
     await page.keyboard.press('End');
     const endLabel = page.locator('#page-31 .epilogue-label');
@@ -103,6 +106,11 @@ async function testPhone(browser, device) {
     assert.equal((await endLabel.evaluate(sample)).offset, 0);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), page.viewportSize().width);
     assert.deepEqual(errors, []);
+    await page.goto(new URL('../03.html', url).href, { waitUntil: 'domcontentloaded' });
+    assert.match(await page.locator('h1').innerText(), /트리거 워닝/);
+    await page.getByRole('link', { name: /다음/ }).tap();
+    await page.waitForURL(/04\.html$/, { waitUntil: 'domcontentloaded' });
+    assert.match(await page.locator('h1').innerText(), /시놉시스/);
     console.log(`${device}: opacity ${halfway.opacity.toFixed(2)} at halfway, 1 at three quarters; touch swipe, reverse scroll, reduced motion, and profile link passed`);
   } finally {
     await context.close();

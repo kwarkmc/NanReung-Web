@@ -11,7 +11,7 @@ CASTING = ROOT / "docs" / "casting"
 
 def render(data, scroll):
     cast = {actor["number"]: actor for actor in data["cast"]}
-    assets = "../assets/" if scroll else "assets/"
+    assets = "../../assets/" if scroll else "../assets/"
     styles = "../casting.css" if scroll else "casting.css"
     script = "../../scroll/scroll.js" if scroll else "casting.js"
     mode = " casting-scroll" if scroll else ""
@@ -27,7 +27,7 @@ def render(data, scroll):
         destination = f'href="#cast-{index}"' if scroll else f'type="button" data-actor="{index}" aria-haspopup="dialog"'
         cards.append(
             f'      <{tag} class="cast-card" {destination}>\n'
-            f'        <img src="{assets}card-{index}.png" alt="" width="62" height="82">\n'
+            f'        <img src="{assets}cast-thumb-{index}.jpg" alt="" width="248" height="328">\n'
             f'        <span class="card-copy"><strong>{name}</strong><span>{role}</span></span>{badge}\n'
             f'      </{tag}>'
         )
@@ -38,8 +38,8 @@ def render(data, scroll):
         description = escape(actor["description"])
         name_id = f"cast-name-{index}"
         profile = (
-            f'        <img class="cast-portrait chapter-header" src="{assets}portrait-{index}.jpg" alt="{name}"'
-            ' width="302" height="282" loading="lazy">\n'
+            f'        <img class="cast-portrait chapter-header" src="{assets}cast-{index}.jpg" alt="{name}"'
+            ' loading="lazy">\n'
             '        <div class="cast-copy chapter-content-2">\n'
             '          <div class="cast-identity">\n'
             f'            <h2 id="{name_id}">{name}</h2>\n'
