@@ -80,6 +80,8 @@ def render(source, screen):
     stylesheet = "stage-cast.css" if is_cast else "stage-book.css"
     shared = f'  <link rel="stylesheet" href="{root}/stage.css">\n'
     shared += f'  <link rel="stylesheet" href="{root}/{stylesheet}">\n'
+    if screen == "index.html":
+        shared += f'  <link rel="stylesheet" href="{root}/button-cover.css">\n'
     if is_scroll:
         shared += f'  <script src="{root}/vendor/gsap.min.js" defer></script>\n'
         shared += f'  <script src="{root}/vendor/ScrollTrigger.min.js" defer></script>\n'

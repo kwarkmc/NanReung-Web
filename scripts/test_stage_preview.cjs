@@ -121,6 +121,7 @@ async function opening(page, name) {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.waitForSelector(".poster-runway.is-animated");
   await sample(1);
+  await page.waitForFunction(() => Number(getComputedStyle(document.querySelector(".stage-art")).opacity) === 1);
 }
 
 async function fastButtonSwipe(page, name) {
@@ -184,6 +185,12 @@ async function testDevice(browser, name, device) {
     }
     await opening(page, name);
     await photoReady(page.locator(".stage-art"));
+    const art = await page.locator(".stage-art").boundingBox();
+    const rail = await page.locator(".book-pagination").boundingBox();
+    const viewport = page.viewportSize();
+    const expectedWidth = Math.min(viewport.width, (viewport.height - 48) * 1449 / 2050);
+    assert.ok(Math.abs(art.width - expectedWidth) < 2, name + " poster should fill the available width or height");
+    assert.ok(art.y >= -1 && art.y + art.height <= rail.y + 1 && rail.y + rail.height <= viewport.height + 1);
     const posterLink = page.getByRole("link", { name: /공연 포스터 크게 보기/ });
     assert.match(await posterLink.getAttribute("href"), /poster\.webp$/);
     assert.match(await posterLink.locator(".stage-art").getAttribute("alt"), /한양예술극장/);
