@@ -104,6 +104,7 @@ async function testDevice(browser, name, device) {
     await screenshot(page, name + "-cast-scroll");
     await page.locator(".stage-sections").getByText("프로그램북").click();
     await page.waitForURL("**/test/scroll/");
+    await page.locator("main > .book-page").first().waitFor({ state: "attached" });
     assert.equal(await page.locator("main > .book-page").count(), 31);
     await page.waitForFunction(() => window.ScrollTrigger && ScrollTrigger.getAll().length > 0);
     await noOverflow(page);
