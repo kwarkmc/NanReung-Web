@@ -10,7 +10,7 @@
 
 .stage-book .book-page {
   width: var(--book-width);
-  min-height: min(720px, calc(100svh - 64px));
+  min-height: min(720px, 100svh);
   gap: clamp(18px, 3.2vw, 36px);
   padding: clamp(20px, 5vw, 72px);
   margin-inline: auto;
@@ -129,7 +129,7 @@
   max-width: 1240px;
   width: 100%;
   margin-block: 0;
-  min-height: calc(100svh - 64px);
+  min-height: 100svh;
   background: radial-gradient(ellipse at 70% 44%, #41161b 0%, transparent 68%);
   color: var(--cover-ink);
 }
@@ -227,3 +227,84 @@
   .stage-book .stage-cover .copy-2 { font-size: 46px; }
   .stage-book .stage-cover .stage-art { height: clamp(170px, 44svh, 252px); }
 }
+
+/* Keep the cover readable without JavaScript and when reduced motion is on. */
+.poster-flight, .poster-cue, .poster-atmosphere { display: none; }
+.poster-runway.is-animated {
+  display: flow-root;
+  background: #000;
+}
+.poster-runway.is-animated::after { content: ""; display: block; height: 150svh; }
+.is-animated .poster-pin {
+  position: sticky;
+  top: 0;
+  isolation: isolate;
+  min-height: 100svh;
+  overflow: clip;
+  background: #000;
+}
+.is-animated .stage-cover {
+  margin-block: 0 !important;
+  height: auto;
+  opacity: var(--cover-light, 0);
+  z-index: 1;
+  animation: none !important;
+}
+.is-animated .stage-art {
+  mask-image: linear-gradient(145deg, black var(--ink-start, -40%), transparent var(--ink-end, 0%));
+}
+.is-animated .poster-atmosphere {
+  pointer-events: none;
+  display: block;
+  position: absolute;
+  inset: 0;
+  opacity: var(--haze, 0);
+  background: radial-gradient(ellipse at 56% 76%, #5f1d23 0, #2e1014 42%, #130709 73%);
+}
+.is-animated .poster-flight {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100svh;
+  pointer-events: none;
+  perspective: 1000px;
+  z-index: 2;
+}
+.mask-spin {
+  position: relative;
+  width: min(59vw, 44svh, 410px);
+  transform-style: preserve-3d;
+}
+.mask-front { display: block; width: 100%; transform: translateZ(4px); }
+.mask-spin::before, .mask-spin::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url(mask-front.webp) center / contain no-repeat;
+  transform: translateZ(-5px);
+  filter: brightness(.3) sepia(.35);
+}
+.mask-spin::after { transform: translateZ(-11px) rotateY(180deg); backface-visibility: hidden; }
+.is-animated .poster-cue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 13px;
+  position: absolute;
+  top: 79svh;
+  left: 50%;
+  translate: -50% 0;
+  padding: 10px 18px;
+  border: 0;
+  background: transparent;
+  color: #ddd1c2;
+  font: 300 12px/1.4 var(--stage-sans);
+  letter-spacing: .18em;
+  white-space: nowrap;
+  cursor: pointer;
+  z-index: 3;
+}
+.poster-cue::after { content: ""; width: 1px; height: 33px; background: linear-gradient(#c2a486, #46342a); }
+

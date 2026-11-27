@@ -16,15 +16,11 @@
   <script src="../vendor/gsap.min.js" defer></script>
   <script src="../vendor/ScrollTrigger.min.js" defer></script>
   <script src="../stage-motion.js" defer></script>
+  <script src="../poster-motion.js" defer></script>
 </head>
 <body class="stage stage-book stage-scroll">
-  <header class="stage-bar">
-    <a class="stage-wordmark" href="../">난릉</a>
-    <nav class="stage-sections" aria-label="프로그램 종류"><a href="../scroll/" aria-current="true">프로그램북</a><a href="../casting/scroll/">캐스팅보드</a></nav>
-    <nav class="stage-modes" aria-label="읽기 방식"><a href=".././">버튼</a><a href="../scroll/" aria-current="page">스크롤</a></nav>
-  </header>
   <main>
-    <section class="program-page book-page stage-cover" id="page-01" aria-labelledby="title-01" tabindex="-1">
+    <div class="poster-runway"><div class="poster-pin"><section class="program-page book-page stage-cover" id="page-01" aria-labelledby="title-01" tabindex="-1">
       <div class="cover-layout">
         <div class="cover-content">
           <p class="copy">2026 · 2·한양대학교 GLOBAL FUTURE THEATRE 창작 뮤지컬 쇼케이스 </p>
@@ -43,7 +39,7 @@
         </div>
       </div>
       <footer class="scroll-footer"><a class="scroll-action" href="#page-02">아래로 스크롤 <span aria-hidden="true">↓</span></a></footer>
-    </section>
+    </section><div class="poster-atmosphere" aria-hidden="true"></div><div class="poster-flight" aria-hidden="true"><div class="mask-spin"><img class="mask-front" src="../mask-front.webp" alt="" fetchpriority="high"></div></div><button class="poster-cue" type="button">아래로 스크롤</button></div></div>
     <section class="program-page-2 book-page stage-contents" id="page-02" aria-labelledby="title-02" tabindex="-1">
       <div class="chapter-header">
         <div class="editorial-header">

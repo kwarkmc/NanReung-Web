@@ -59,25 +59,22 @@ def render(source, screen):
         )
         source = source.replace('<div class="motion-poster">', '<div class="motion-poster">' + artwork)
 
-    def tab(path, caption, active, current="page"):
-        indicator = f' aria-current="{current}"' if active else ""
-        return f'<a href="{root}/{path}"{indicator}>{caption}</a>'
+    if screen in ("index.html", "scroll/index.html"):
+        tag = "section" if is_scroll else "main"
+        opening = f'<{tag} class="program-page book-page stage-cover"'
+        start = source.index(opening)
+        end = source.index(f"</{tag}>", start) + len(f"</{tag}>")
+        layers = (
+            '<div class="poster-atmosphere" aria-hidden="true"></div>'
+            '<div class="poster-flight" aria-hidden="true"><div class="mask-spin">'
+            f'<img class="mask-front" src="{root}/mask-front.webp" alt="" fetchpriority="high">'
+            '</div></div>'
+            '<button class="poster-cue" type="button">아래로 스크롤</button>'
+        )
+        scene = ('<div class="poster-runway"><div class="poster-pin">'
+                 + source[start:end] + layers + '</div></div>')
+        source = source[:start] + scene + source[end:]
 
-    book_link = "scroll/" if is_scroll else "./"
-    cast_link = "casting/scroll/" if is_scroll else "casting/"
-    mode_base = "casting/" if is_cast else ""
-    masthead = (
-        '\n  <header class="stage-bar">\n'
-        f'    <a class="stage-wordmark" href="{root}/">난릉</a>\n'
-        '    <nav class="stage-sections" aria-label="프로그램 종류">'
-        + tab(book_link, "프로그램북", not is_cast, "true")
-        + tab(cast_link, "캐스팅보드", is_cast, "true") + '</nav>\n'
-        '    <nav class="stage-modes" aria-label="읽기 방식">'
-        + tab(mode_base or "./", "버튼", not is_scroll)
-        + tab(mode_base + "scroll/", "스크롤", is_scroll) + '</nav>\n'
-        '  </header>'
-    )
-    source = re.sub(r'<body[^>]*>', lambda m: m[0] + masthead, source, count=1)
     stylesheet = "stage-cast.css" if is_cast else "stage-book.css"
     shared = f'  <link rel="stylesheet" href="{root}/stage.css">\n'
     shared += f'  <link rel="stylesheet" href="{root}/{stylesheet}">\n'
@@ -85,6 +82,8 @@ def render(source, screen):
         shared += f'  <script src="{root}/vendor/gsap.min.js" defer></script>\n'
         shared += f'  <script src="{root}/vendor/ScrollTrigger.min.js" defer></script>\n'
         shared += f'  <script src="{root}/stage-motion.js" defer></script>\n'
+    if screen in ("index.html", "scroll/index.html"):
+        shared += f'  <script src="{root}/poster-motion.js" defer></script>\n'
     return source.replace("</head>", shared + "</head>", 1)
 
 

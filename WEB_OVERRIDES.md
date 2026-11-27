@@ -31,4 +31,6 @@
 
 테스트판은 `docs/test/`에 격리한다. `scripts/build_stage_preview.py`가 운영 HTML의 본문·동선을 가져오므로, Figma를 동기화해도 테스트판의 스타일과 연출은 `docs/test/stage*.css`, `stage-motion.js`에서 유지한다. `poster.webp`는 사용자가 제공한 `포스터.png`를 화면용으로 줄인 이미지다. 표지와 캐스팅의 적색·청동색, 본문의 따뜻한 종이색은 이 포스터에서 가져왔다.
 
-스크롤판의 포스터 이동과 장별 등장은 고정된 GSAP 3.14.2와 ScrollTrigger로 구현한다. 두 라이브러리는 `docs/test/vendor/`에 있으며 배포 파일 헤더의 [GSAP 라이선스](https://gsap.com/standard-license/)가 적용된다.
+프로그램북 두 표지의 오프닝은 `poster-motion.js`와 CSS 3D 변환으로 구현한다. `mask-front.webp`는 포스터 오른쪽 아래 가면을 참고해 재구성한 정면 이미지다. 스크롤 거리에 따라 검정 배경에서 한 바퀴 돌아 포스터 속 가면 위치에 내려앉고 마지막에는 원본 포스터를 보여 준다. 동작 줄이기 설정에서는 표지를 바로 표시한다. 네 테스트 URL은 독립적으로 공유하며 상단 전환 메뉴를 추가하지 않는다.
+
+스크롤판의 장별 등장은 고정된 GSAP 3.14.2와 ScrollTrigger로 구현한다. 두 라이브러리는 `docs/test/vendor/`에 있으며 배포 파일 헤더의 [GSAP 라이선스](https://gsap.com/standard-license/)가 적용된다.

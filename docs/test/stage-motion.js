@@ -3,18 +3,6 @@ if (window.gsap && window.ScrollTrigger) {
   const motion = gsap.matchMedia();
 
   motion.add("(prefers-reduced-motion: no-preference)", () => {
-    const poster = document.querySelector(".stage-cover .stage-art");
-    if (poster) {
-      gsap.to(poster, {
-        scale: 1.06,
-        yPercent: -6,
-        ease: "none",
-        scrollTrigger: {
-          trigger: ".stage-cover", start: "top top", end: "bottom top", scrub: true
-        }
-      });
-    }
-
     const sections = document.querySelectorAll(
       ".stage-book .stage-chapter, .stage-book .stage-profile, .stage-cast .cast-scene"
     );

@@ -12,7 +12,7 @@
 .stage-cast .casting-shell { width: min(100%, 1260px); }
 .stage-cast .cast-board {
   padding: clamp(24px, 5vw, 68px) clamp(14px, 4vw, 64px) clamp(30px, 7vw, 88px);
-  min-height: calc(100svh - 64px);
+  min-height: 100svh;
   background: transparent;
 }
 .stage-cast .cast-board::after { border-color: var(--stage-line); }

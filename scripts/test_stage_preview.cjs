@@ -49,6 +49,63 @@ async function noOverflow(page) {
   assert.ok(sizes.document <= sizes.screen + 1, JSON.stringify({ url: page.url(), ...sizes }));
 }
 
+async function opening(page, name) {
+  await page.waitForSelector(".poster-runway.is-animated");
+  const sample = async fraction => {
+    await page.evaluate(t => {
+      const runway = document.querySelector(".poster-runway");
+      scrollTo(0, t * (runway.offsetHeight - runway.firstElementChild.offsetHeight));
+    }, fraction);
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    return page.evaluate(() => {
+      const style = sel => getComputedStyle(document.querySelector(sel));
+      return {
+        pinned: Math.abs(document.querySelector(".poster-pin").getBoundingClientRect().top) <= 1,
+        cover: Number(style(".stage-cover").opacity),
+        flight: Number(style(".poster-flight").opacity),
+        turn: document.querySelector(".mask-spin").style.transform,
+        haze: Number(style(".poster-atmosphere").opacity),
+        background: style(".poster-pin").backgroundColor
+      };
+    });
+  };
+  const first = await sample(0);
+  assert.equal(first.background, "rgb(0, 0, 0)");
+  assert.equal(first.cover, 0);
+  assert.equal(first.flight, 1);
+  await screenshot(page, name + "-opening");
+  if (await page.evaluate(() => navigator.maxTouchPoints > 0)) {
+    const input = await page.context().newCDPSession(page);
+    await input.send("Input.dispatchTouchEvent", {type: "touchStart", touchPoints: [{x: 140, y: 340}]});
+    for (const y of [315, 285, 255, 225, 195, 165]) {
+      await input.send("Input.dispatchTouchEvent", {type: "touchMove", touchPoints: [{x: 140, y}]});
+      await page.waitForTimeout(45);
+    }
+    await page.waitForFunction(() => scrollY > 40 && document.querySelector(".poster-atmosphere").checkVisibility() &&
+      parseFloat(getComputedStyle(document.querySelector(".poster-atmosphere")).opacity) > 0);
+    await page.waitForTimeout(150);
+    await input.send("Input.dispatchTouchEvent", {type: "touchEnd", touchPoints: []});
+    await input.detach();
+  }
+  const middle = await sample(.5);
+  assert.ok(middle.pinned, "poster must stay in the viewport throughout the turn");
+  assert.ok(middle.haze > .4 && middle.cover > 0 && middle.cover < 1);
+  assert.match(middle.turn, /rotateY\(1(?:79|80)/);
+  await screenshot(page, name + "-turn");
+  const end = await sample(1);
+  assert.ok(end.pinned);
+  assert.equal(end.cover, 1);
+  assert.equal(end.flight, 0);
+  assert.match(end.turn, /rotateY\(360deg\)/);
+  assert.deepEqual(await sample(0), first);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.waitForSelector(".poster-flight", {state: "hidden"});
+  assert.equal(await page.locator(".stage-cover").evaluate(el => el.inert), false);
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.waitForSelector(".poster-runway.is-animated");
+  await sample(1);
+}
+
 async function testDevice(browser, name, device) {
   const context = await contextFor(browser, device);
   try {
@@ -56,6 +113,7 @@ async function testDevice(browser, name, device) {
     const errors = [];
     page.on("pageerror", error => errors.push(error.message));
     await pageText(page, "/test/");
+    await opening(page, name);
     await photoReady(page.locator(".stage-art"));
     const posterLink = page.getByRole("link", { name: /공연 포스터 크게 보기/ });
     assert.match(await posterLink.getAttribute("href"), /poster\.webp$/);
@@ -72,8 +130,7 @@ async function testDevice(browser, name, device) {
     await noOverflow(page);
     await screenshot(page, name + "-profile");
 
-    await page.locator(".stage-sections").getByText("캐스팅보드").click();
-    await page.waitForURL("**/test/casting/");
+    await pageText(page, "/test/casting/");
     assert.equal(await page.locator(".cast-card").count(), 12);
     await photoReady(page.locator(".cast-card img").first());
     await noOverflow(page);
@@ -96,16 +153,13 @@ async function testDevice(browser, name, device) {
     assert.equal(await dialog.getByRole("heading").innerText(), "박정호");
     await page.keyboard.press("Escape");
 
-    await page.locator(".stage-modes").getByText("스크롤").click();
-    await page.waitForURL("**/test/casting/scroll/");
+    await pageText(page, "/test/casting/scroll/");
     await page.locator(".cast-card").first().click();
     assert.equal(new URL(page.url()).hash, "#cast-01");
     await noOverflow(page);
     await screenshot(page, name + "-cast-scroll");
-    await page.locator(".stage-sections").getByText("프로그램북").click();
-    await page.waitForURL("**/test/scroll/");
-    await page.locator("main > .book-page").first().waitFor({ state: "attached" });
-    assert.equal(await page.locator("main > .book-page").count(), 31);
+    await pageText(page, "/test/scroll/");
+    assert.equal(await page.locator("main .book-page").count(), 31);
     await page.waitForFunction(() => window.ScrollTrigger && ScrollTrigger.getAll().length > 0);
     await noOverflow(page);
 
@@ -116,11 +170,14 @@ async function testDevice(browser, name, device) {
       await pageText(page, route);
       for (const item of await page.locator(selector).all()) before.push((await item.textContent()).replace(/\s+/g, " ").trim());
       await pageText(page, "/test" + route);
+      assert.equal(await page.locator(".stage-bar, .stage-sections, .stage-modes").count(), 0);
+      await page.locator(".poster-cue").evaluateAll(nodes => nodes.forEach(node => node.textContent = ""));
       await noOverflow(page);
       for (const item of await page.locator(selector).all()) after.push((await item.textContent()).replace(/\s+/g, " ").trim());
       assert.deepEqual(after, before, route + " copy differs");
     }
     await pageText(page, "/test/scroll/");
+    await opening(page, name + "-scroll");
     const heading = page.locator("#page-04 .chapter-header");
     const place = async fraction => {
       await page.locator("#page-04").evaluate((node, value) => window.scrollBy(0, node.getBoundingClientRect().top - innerHeight * value), fraction);
