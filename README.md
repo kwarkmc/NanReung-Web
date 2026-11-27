@@ -1,6 +1,6 @@
 # 뮤지컬 〈난릉〉 웹 프로그램북
 
-Figma 모바일 프로그램북을 옮긴 정적 웹사이트입니다. `docs/index.html`이 첫 화면이고 `docs/02.html`부터 `docs/31.html`까지가 나머지 페이지입니다. 공통 스타일은 `docs/styles.css`, 프로필 사진은 `docs/assets/`에 있습니다.
+Figma의 19쪽 모바일 프로그램북을 옮긴 정적 웹사이트입니다. 운영 프로그램북은 `docs/index.html`과 `docs/02.html`부터 `docs/19.html`까지입니다. 표지·본문 스타일은 `docs/program-book.css`, 포스터·안내·연습사진은 `docs/assets/program/`, 공유 프로필 사진은 `docs/assets/`에 있습니다.
 
 ## 로컬에서 확인
 
@@ -10,7 +10,7 @@ Python 3에서 저장소 루트에서 다음 명령을 실행하고 `http://loca
 python -m http.server 8000 --directory docs
 ```
 
-목차에서 프로필로 이동하고 브라우저 뒤로 가기를 확인합니다. 1쪽의 이전 버튼과 31쪽의 다음 버튼이 서로 이어지는지 확인합니다.
+목차에서 프로필로 이동하고 브라우저 뒤로 가기를 확인합니다. 1쪽의 이전 버튼과 19쪽의 다음 버튼이 서로 이어지는지 확인합니다.
 
 ## 스크롤 미리보기
 
@@ -48,15 +48,13 @@ node scripts/test_casting.cjs
 
 Figma 동기화 시 보존할 웹 변경과 배우별 사진 매핑은 [웹과 Figma 동기화](WEB_OVERRIDES.md)에 기록합니다.
 
-`docs/`를 정적 호스팅의 공개 디렉터리로 사용합니다. Figma 원본의 임시 에셋 주소는 배포 파일에 포함하지 않습니다. 오프닝과 엔딩 영상, 연습 사진, 일부 본문은 Figma의 자리표시자를 반영합니다.
+`docs/`를 정적 호스팅의 공개 디렉터리로 사용합니다. Figma의 표지·트리거 워닝·연습사진은 로컬 에셋으로 배포합니다.
 
 ## 포스터 기반 디자인 테스트
 
-`/test/`, `/test/scroll/`, `/test/casting/`, `/test/casting/scroll/`은 각각 독립적으로 여는 URL입니다. 프로그램북 두 표지에서 아래로 스크롤하면 가면이 회전하며 공연 포스터로 이어집니다. 원본 HTML을 수정했다면 다음 명령으로 테스트판도 갱신하세요.
+`/test/`, `/test/scroll/`, `/test/casting/`, `/test/casting/scroll/`은 각각 독립적으로 여는 디자인 스냅샷입니다. 프로그램북 두 표지에서 아래로 스크롤하면 가면이 회전하며 공연 포스터로 이어집니다. 이 스냅샷의 프로그램북 생성기는 기존 31쪽 소스를 기준으로 작성됐습니다.
 
 ```sh
-python scripts/build_stage_preview.py
-python scripts/build_stage_preview.py --check
 node scripts/test_stage_preview.cjs
 ```
 

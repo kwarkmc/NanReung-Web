@@ -29,12 +29,12 @@ async function testPhone(browser, device) {
     page.on('pageerror', (error) => errors.push(error.message));
     const response = await page.goto(url, { waitUntil: 'domcontentloaded' });
     assert.ok(response.ok(), `${device}: preview HTTP ${response.status()}`);
-    assert.equal(await page.locator('main > .book-page').count(), 31);
+    assert.equal(await page.locator('main > .book-page').count(), 19);
 
-    assert.match(await page.locator('#page-03').innerText(), /관람 전 안내/);
-    assert.match(await page.locator('#page-06').innerText(), /가면 속 두 남자/);
+    assert.match(await page.locator('#page-03').innerText(), /트리거워닝/);
+    assert.match(await page.locator('#page-05').innerText(), /가면 속 두 남자/);
     const heading = page.locator('#page-04 .chapter-header');
-    const content = page.locator('#page-04 .layout-2');
+    const content = page.locator('#page-04 blockquote');
     await position(page, heading, 0.86);
     const nearEdge = await heading.evaluate(sample);
     assert.ok(nearEdge.visible && nearEdge.opacity < 0.45 && nearEdge.offset > 26,
@@ -95,22 +95,43 @@ async function testPhone(browser, device) {
     const portraitLink = page.locator('#page-02 a[href="#page-08"]');
     await portraitLink.tap();
     await page.waitForURL(/#page-08$/, { waitUntil: 'commit' });
-    await page.waitForFunction(() => document.querySelector('#page-08 img').naturalWidth >= 1100);
+    await page.waitForFunction(() => document.querySelector('#page-08 .program-portrait').naturalWidth >= 1100);
+    assert.ok(await page.locator('#page-08 .program-content').evaluate(content =>
+      content.querySelector('.program-portrait').getBoundingClientRect().bottom <=
+      content.querySelector('h2').getBoundingClientRect().top), 'profile copy must follow the photo without overlap');
 
     await page.keyboard.press('End');
-    const endLabel = page.locator('#page-31 .epilogue-label');
+    const endLabel = page.locator('#page-19 .scroll-action');
     await page.waitForFunction(() => {
-      const label = document.querySelector('#page-31 .epilogue-label');
+      const label = document.querySelector('#page-19 .scroll-action');
       return label.getBoundingClientRect().bottom <= innerHeight && getComputedStyle(label).opacity === '1';
     }, undefined, { timeout: 2500 });
     assert.equal((await endLabel.evaluate(sample)).offset, 0);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), page.viewportSize().width);
     assert.deepEqual(errors, []);
     await page.goto(new URL('../03.html', url).href, { waitUntil: 'domcontentloaded' });
-    assert.match(await page.locator('h1').innerText(), /트리거 워닝/);
+    assert.match(await page.locator('h1').innerText(), /트리거워닝/);
     await page.getByRole('link', { name: /다음/ }).tap();
     await page.waitForURL(/04\.html$/, { waitUntil: 'domcontentloaded' });
     assert.match(await page.locator('h1').innerText(), /시놉시스/);
+
+    await page.goto(new URL('../02.html', url).href);
+    assert.equal(await page.locator('.book-contents-link').count(), 19);
+    await page.getByRole('link', {name: /함께 만든 이들/}).tap();
+    await page.waitForURL(/18\.html$/);
+    assert.equal(await page.locator('.program-credits dt').count(), 44);
+    await page.getByRole('link', {name: /다음/}).tap();
+    await page.waitForURL(/19\.html$/);
+    const gallery = page.locator('.program-gallery img');
+    assert.equal(await gallery.count(), 20);
+    for (const image of await gallery.all()) {
+      await image.evaluate(async img => { img.loading = 'eager'; await img.decode(); });
+    }
+    await page.getByRole('link', {name: /다음/}).tap();
+    await page.waitForURL(target => !/\/19\.html$/.test(target.pathname));
+    await page.locator('.program-poster').evaluate(img => img.decode());
+    await page.getByRole('link', {name: /이전/}).tap();
+    await page.waitForURL(/19\.html$/);
     console.log(`${device}: opacity ${halfway.opacity.toFixed(2)} at halfway, 1 at three quarters; touch swipe, reverse scroll, reduced motion, and profile link passed`);
   } finally {
     await context.close();

@@ -1,0 +1,127 @@
+.program-book {
+  --program-rule: #dbc4cb;
+  --program-wine: #752940;
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+  max-width: 560px;
+  min-height: 100svh;
+  padding: 24px clamp(16px, 5.64vw, 30px) 25px;
+  margin-inline: auto;
+  background: var(--paper);
+  overflow-wrap: anywhere;
+}
+
+.program-heading {
+  position: relative;
+  width: auto;
+  height: auto;
+  min-height: 66px;
+  padding: 9px 14px 13px;
+  border-block: 1px solid var(--program-rule);
+  color: var(--wine);
+  background: url("assets/program/ink-header.svg") right top no-repeat;
+}
+
+.program-heading::before {
+  position: absolute;
+  inset: 10px auto 3px 0;
+  width: 3px;
+  background: var(--program-wine);
+  content: "";
+}
+
+.program-book .program-heading :is(h1, h2),
+.program-book .program-content h2 {
+  font-size: 1.625rem;
+  line-height: 1.28;
+  font-weight: 700;
+}
+
+.profile-folio, .program-kicker {
+  margin-bottom: 3px;
+  color: var(--program-wine);
+  font-size: .75rem;
+  letter-spacing: .04em;
+}
+
+.program-intro { display: grid; gap: 15px; }
+.program-intro > p { color: var(--muted); font-size: .69rem; text-align: center; }
+.program-cover { padding-top: clamp(32px, 9svh, 85px); }
+.program-intro h1 {
+  border-top: 1px solid var(--program-rule);
+  padding-top: 12px;
+  padding-inline: 16px;
+  font: 700 2.8rem/1.2 "Noto Serif KR", Batang, serif;
+}
+
+.program-book :is(.poster-source, .program-poster, .program-warning, .program-portrait, .program-gallery img) {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.program-book .program-portrait { position: static; }
+
+.program-book .program-content {
+  display: grid;
+  width: auto;
+  height: auto;
+  gap: 10px;
+  overflow: visible;
+  padding-top: 16px;
+  border-top: 1px solid var(--program-rule);
+}
+
+.program-book :is(blockquote, .program-content h2) {
+  margin: 0;
+  padding-block: 10px;
+  color: var(--wine);
+  font-family: "Noto Serif KR", Batang, serif;
+}
+
+.program-book .book-prose { display: grid; width: auto; gap: .65em; color: var(--muted); font-size: .875rem; line-height: 1.6; }
+.program-essay { text-align: center; }
+.program-book .program-essay h2 { font-size: 1.15rem; }
+.program-book .program-essay h2:first-child { justify-self: start; }
+.program-credits { display: grid; gap: 13px; margin: 0; }
+.program-credits dt { color: var(--program-wine); font-size: .75rem; font-weight: 700; }
+.program-credits dd { margin: 3px 0 0; }
+.program-gallery { display: grid; gap: 10px; }
+.program-footer-art { max-width: 100%; align-self: center; }
+
+.program-book .book-contents-link {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  align-items: center;
+  gap: 9px;
+  width: auto;
+  height: auto;
+  min-height: 48px;
+  padding: 8px 13px;
+  border: 1px solid var(--line);
+  font-size: .82rem;
+}
+.program-book .book-contents-link span:first-child { color: var(--program-wine); font-family: "Cormorant Garamond", Georgia, serif; }
+.program-book .book-contents-link[aria-current], .program-book .book-contents-link:hover { background: #eee7eb; }
+
+.program-book .book-pagination {
+  display: grid;
+  grid-template-columns: minmax(0, 108px) auto minmax(0, 108px);
+  justify-content: space-between;
+  align-items: center;
+  width: auto;
+  height: auto;
+  gap: clamp(8px, 5vw, 32px);
+  margin-top: auto;
+  overflow: visible;
+}
+.program-book .book-page-link {
+  display: grid;
+  place-items: center;
+  min-height: 44px;
+  border: 1px solid #a6b0bc;
+  font-size: .8rem;
+  font-weight: 700;
+}
+.program-book .book-page-link:hover { background: #eee7eb; }
+.program-folio { color: var(--program-wine); font-size: .75rem; font-weight: 700; font-variant-numeric: tabular-nums; }

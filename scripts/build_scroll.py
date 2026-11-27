@@ -1,4 +1,4 @@
-"""Build the scroll preview from the 31 canonical program-book pages."""
+"""Build the scroll program book from the 19 canonical button pages."""
 
 import argparse
 import re
@@ -8,7 +8,7 @@ from pathlib import Path
 
 DOCS = Path(__file__).resolve().parents[1] / "docs"
 OUTPUT = DOCS / "scroll" / "index.html"
-PAGES = ["index.html", *(f"{number:02}.html" for number in range(2, 32))]
+PAGES = ["index.html", *(f"{number:02}.html" for number in range(2, 20))]
 
 
 def versioned_asset(name):
@@ -22,6 +22,7 @@ def build():
     head = opening.split("</head>", 1)[0]
     head = re.sub(r"<title>[^<]*</title>", "<title>뮤지컬 〈난릉〉 웹 프로그램북</title>", head, count=1)
     head = head.replace('href="styles.css"', 'href="../styles.css"')
+    head = head.replace('href="program-book.css"', 'href="../program-book.css"')
     sections = []
 
     for number, filename in enumerate(PAGES, 1):
@@ -48,7 +49,7 @@ def build():
             lambda match: f'href="#page-{PAGES.index(match[1]) + 1:02}"',
             content,
         )
-        content = content.replace('src="assets/', 'loading="lazy" src="../assets/')
+        content = re.sub(r'(src|href)="assets/', r'\1="../assets/', content)
         footer = f'<span class="scroll-folio">{number:02} / {len(PAGES)}</span>'
         if number == 1:
             footer = '<a class="scroll-action" href="#page-02">아래로 스크롤 <span aria-hidden="true">↓</span></a>'

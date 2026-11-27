@@ -259,7 +259,7 @@ async function testDevice(browser, name, device) {
     await page.waitForFunction(() => window.ScrollTrigger && ScrollTrigger.getAll().length > 0);
     await noOverflow(page);
 
-    for (const route of ["/", "/02.html", "/03.html", "/04.html", "/06.html", "/08.html", "/29.html", "/31.html", "/scroll/", "/casting/", "/casting/scroll/"]) {
+    for (const route of ["/casting/", "/casting/scroll/"]) {
       const selector = route === "/casting/" ? "main, dialog" : "main";
       const before = [];
       const after = [];

@@ -1,0 +1,20 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="346" height="62" viewBox="0 0 346 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="NL / Battlefield &#194;&#183; footer">
+<path id="Vector" opacity="0.08" d="M0 49C20 39 40 35.6667 60 39C80 42.3333 100 39 120 29C148.667 15.6667 173.333 17.6667 194 35C214.667 52.3333 236.667 50.6667 260 30C288 20 316.667 20.6667 346 32V62H0V49Z" fill="#17212F"/>
+<path id="Vector_2" d="M0 54C33.3333 42.6667 63 40.6667 89 48C115 55.3333 142.333 53.6667 171 43C199 33 224 33.6667 246 45C268 56.3333 301.333 53.3333 346 36V62H0V54Z" fill="url(#paint0_linear_0_31)"/>
+<g id="Group" opacity="0.32">
+<path id="Vector_3" d="M260 45V13M284 47V20M310 39V3" stroke-width="0.8" stroke="#4B1A21"/>
+<path id="Vector_4" d="M260 14C267.333 12 273.667 12.6667 279 16L260 23V14ZM284 21L298 23L284 29V21ZM310 4C318.667 2 327.333 3.33333 336 8L310 15V4Z" fill="#4B1A21" stroke-width="0.8" stroke="#4B1A21"/>
+</g>
+<g id="Vector_5" opacity="0.42">
+<path d="M0 61H346Z" fill="black"/>
+<path d="M0 61H346" stroke="#752940"/>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_31" x1="0" y1="35.9688" x2="0" y2="62" gradientUnits="userSpaceOnUse">
+<stop stop-color="#752940" stop-opacity="0.05"/>
+<stop offset="1" stop-color="#752940" stop-opacity="0.19"/>
+</linearGradient>
+</defs>
+</svg>
