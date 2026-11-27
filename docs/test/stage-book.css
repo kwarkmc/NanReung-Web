@@ -234,7 +234,7 @@
   display: flow-root;
   background: #000;
 }
-.poster-runway.is-animated::after { content: ""; display: block; height: 150svh; }
+.poster-runway.is-animated::after { content: ""; display: block; height: 210svh; }
 .is-animated .poster-pin {
   position: sticky;
   top: 0;
@@ -250,8 +250,22 @@
   z-index: 1;
   animation: none !important;
 }
-.is-animated .stage-art {
+.poster-scene { display: none; }
+.is-animated .stage-poster-link {
+  position: relative;
   mask-image: linear-gradient(145deg, black var(--ink-start, -40%), transparent var(--ink-end, 0%));
+}
+.is-animated .poster-scene {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.is-animated .stage-art { position: relative; opacity: var(--lettering, 0); }
+.is-animated .stage-cover :is(.copy, .cover-heading, .cover-rule, .copy-3, .book-pagination, .scroll-footer) {
+  opacity: var(--lettering, 0);
 }
 .is-animated .poster-atmosphere {
   pointer-events: none;

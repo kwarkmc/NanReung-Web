@@ -63,6 +63,8 @@ async function opening(page, name) {
         pinned: Math.abs(document.querySelector(".poster-pin").getBoundingClientRect().top) <= 1,
         cover: Number(style(".stage-cover").opacity),
         flight: Number(style(".poster-flight").opacity),
+        lettering: Number(style(".stage-art").opacity),
+        title: Number(style(".cover-heading").opacity),
         turn: document.querySelector(".mask-spin").style.transform,
         haze: Number(style(".poster-atmosphere").opacity),
         background: style(".poster-pin").backgroundColor
@@ -87,12 +89,23 @@ async function opening(page, name) {
     await input.send("Input.dispatchTouchEvent", {type: "touchEnd", touchPoints: []});
     await input.detach();
   }
-  const middle = await sample(.5);
+  const middle = await sample(.34);
   assert.ok(middle.pinned, "poster must stay in the viewport throughout the turn");
   assert.ok(middle.haze > .4 && middle.cover > 0 && middle.cover < 1);
   assert.match(middle.turn, /rotateY\(1(?:79|80)/);
   await screenshot(page, name + "-turn");
+  await page.locator(".poster-scene").evaluate(image => image.decode());
+  const landed = await sample(.75);
+  assert.equal(landed.flight, 0);
+  assert.equal(landed.cover, 1);
+  assert.equal(landed.title, 0);
+  assert.equal(landed.lettering, 0);
+  await screenshot(page, name + "-landed");
+  const lettering = await sample(.91);
+  assert.ok(lettering.lettering > .45 && lettering.lettering < .55);
+  assert.deepEqual(await sample(.75), landed);
   const end = await sample(1);
+  assert.equal(end.lettering, 1);
   assert.ok(end.pinned);
   assert.equal(end.cover, 1);
   assert.equal(end.flight, 0);
@@ -117,7 +130,7 @@ async function testDevice(browser, name, device) {
     await photoReady(page.locator(".stage-art"));
     const posterLink = page.getByRole("link", { name: /공연 포스터 크게 보기/ });
     assert.match(await posterLink.getAttribute("href"), /poster\.webp$/);
-    assert.match(await posterLink.locator("img").getAttribute("alt"), /한양예술극장/);
+    assert.match(await posterLink.locator(".stage-art").getAttribute("alt"), /한양예술극장/);
     await noOverflow(page);
     await screenshot(page, name + "-cover");
     await page.getByRole("link", { name: /다음/ }).click();
@@ -210,3 +223,4 @@ async function testDevice(browser, name, device) {
   console.error(error);
   process.exitCode = 1;
 });
+

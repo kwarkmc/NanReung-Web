@@ -53,6 +53,7 @@ def render(source, screen):
         artwork = (
             f'<a class="stage-poster-link" href="{poster}" target="_blank" rel="noopener"'
             ' aria-label="공연 포스터 크게 보기 (새 탭)" aria-describedby="stage-poster-art">'
+            f'<img class="poster-scene" src="{root}/poster-scene.webp" alt="" aria-hidden="true" fetchpriority="high">'
             f'<img id="stage-poster-art" class="stage-art" src="{poster}"'
             ' alt="뮤지컬 〈난릉〉 공연 포스터. 2026년 11월 27일 금요일 19:00, 11월 28일 토요일 16:00. 한양대학교 한양예술극장."'
             ' width="1449" height="2050" fetchpriority="high"></a>'

@@ -21,17 +21,20 @@
     const progress = clamp(-runway.getBoundingClientRect().top / Math.max(1, distance));
     const target = poster.getBoundingClientRect();
     const view = flight.getBoundingClientRect();
-    const landing = fade(progress, 0.19, 0.98);
+    // Finish the original turn, hold the unlettered scene, then restore the typography.
+    const turn = clamp(progress / .68);
+    const landing = fade(turn, 0.19, 0.98);
     const x = target.left + target.width * .77 - (view.left + view.width / 2);
     const y = target.top + target.height * .74 - (view.top + view.height / 2);
     const lift = -view.height * .09 * (1 - landing);
     const scale = 1 + (target.width * .64 / mask.offsetWidth - 1) * landing;
     mask.style.transform = 'translate3d(' + x * landing + 'px,' + (lift + y * landing) +
-      'px,0) scale(' + scale + ') rotateZ(' + 29 * landing + 'deg) rotateY(' + 360 * progress + 'deg)';
-    flight.style.opacity = 1 - fade(progress, .77, 1);
-    pin.style.setProperty("--cover-light", fade(progress, .25, .95));
-    pin.style.setProperty("--haze", fade(progress, .02, .62) * (1 - fade(progress, .67, 1)));
-    const edge = fade(progress, .22, 1) * 145;
+      'px,0) scale(' + scale + ') rotateZ(' + 29 * landing + 'deg) rotateY(' + 360 * turn + 'deg)';
+    flight.style.opacity = 1 - fade(turn, .77, 1);
+    pin.style.setProperty("--cover-light", fade(turn, .25, .95));
+    pin.style.setProperty("--haze", fade(turn, .02, .62) * (1 - fade(turn, .67, 1)));
+    pin.style.setProperty("--lettering", fade(progress, .82, 1));
+    const edge = fade(turn, .22, 1) * 145;
     pin.style.setProperty("--ink-start", (edge - 40) + "%");
     pin.style.setProperty("--ink-end", edge + "%");
     cue.style.opacity = 1 - fade(progress, .01, .23);
@@ -59,7 +62,7 @@
   reduced.addEventListener("change", configure);
   if (document.fonts) document.fonts.ready.then(schedule);
   configure();
-  mask.querySelector("img").decode().catch(() => {
+  Promise.all([mask.querySelector("img").decode(), pin.querySelector(".poster-scene").decode()]).catch(() => {
     reduced.removeEventListener("change", configure);
     runway.classList.remove("is-animated");
     cover.inert = false;
