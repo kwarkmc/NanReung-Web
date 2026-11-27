@@ -101,9 +101,13 @@ async function opening(page, name) {
   assert.equal(landed.title, 0);
   assert.equal(landed.lettering, 0);
   await screenshot(page, name + "-landed");
+  await sample(.91);
+  await page.waitForFunction(() => Number(getComputedStyle(document.querySelector(".stage-art")).opacity) > .45);
   const lettering = await sample(.91);
   assert.ok(lettering.lettering > .45 && lettering.lettering < .55);
   assert.deepEqual(await sample(.75), landed);
+  await sample(1);
+  await page.waitForFunction(() => Number(getComputedStyle(document.querySelector(".stage-art")).opacity) === 1);
   const end = await sample(1);
   assert.equal(end.lettering, 1);
   assert.ok(end.pinned);
@@ -119,6 +123,54 @@ async function opening(page, name) {
   await sample(1);
 }
 
+async function fastButtonSwipe(page, name) {
+  await page.locator(".poster-scene").evaluate(image => image.decode());
+  await page.evaluate(() => {
+    window.buttonFrames = [];
+    function record(time) {
+      const opacity = sel => Number(getComputedStyle(document.querySelector(sel)).opacity);
+      window.buttonFrames.push({time, flight: opacity(".poster-flight"), ink: opacity(".stage-art")});
+      if (opacity(".stage-art") < 1 && window.buttonFrames.length < 900) requestAnimationFrame(record);
+    }
+    requestAnimationFrame(record);
+  });
+  const input = await page.context().newCDPSession(page);
+  const height = page.viewportSize().height;
+  const gesture = (async () => {
+    for (let swipe = 0; swipe < 4; swipe++) {
+      await input.send("Input.dispatchTouchEvent", {type: "touchStart", touchPoints: [{x: 150, y: height * .9}]});
+      for (const fraction of [.72, .5, .28, .08]) {
+        await input.send("Input.dispatchTouchEvent", {type: "touchMove", touchPoints: [{x: 150, y: height * fraction}]});
+      }
+      await input.send("Input.dispatchTouchEvent", {type: "touchEnd", touchPoints: []});
+      if (await page.evaluate(() => scrollY + innerHeight >= document.documentElement.scrollHeight - 1)) break;
+    }
+  })();
+  await page.waitForFunction(() => Number(getComputedStyle(document.querySelector(".poster-flight")).opacity) === 0);
+  await page.waitForTimeout(220);
+  const rect = await page.locator(".stage-art").boundingBox();
+  const landed = await page.screenshot({clip: rect, scale: "css"});
+  await gesture;
+  await input.detach();
+  await page.waitForFunction(() => Number(getComputedStyle(document.querySelector(".stage-art")).opacity) === 1);
+  const frames = await page.evaluate(() => window.buttonFrames);
+  const start = frames.find(f => f.flight === 0);
+  const visible = frames.find(f => f.ink > 0);
+  assert.ok(start && visible);
+  const held = Math.round(visible.time - start.time);
+  console.log(name + " fast swipe: clean poster held " + held + "ms");
+  assert.ok(held >= 600, "fast swipe skipped clean poster: " + held + "ms");
+  // Compare the captured pixels to the same crop with only the decoded clean plate showing.
+  const reference = await page.screenshot({clip: rect, scale: "css", style: ".stage-art { visibility: hidden !important; }"});
+  assert.ok(landed.equals(reference), "landed screenshot must match the clean image");
+  const final = await page.screenshot({clip: rect, scale: "css"});
+  assert.ok(!landed.equals(final), "final poster must show lettering");
+  if (capture) {
+    await fs.mkdir(capture, {recursive: true});
+    await fs.writeFile(path.join(capture, name + "-swipe-landed.png"), landed);
+  }
+}
+
 async function testDevice(browser, name, device) {
   const context = await contextFor(browser, device);
   try {
@@ -126,6 +178,10 @@ async function testDevice(browser, name, device) {
     const errors = [];
     page.on("pageerror", error => errors.push(error.message));
     await pageText(page, "/test/");
+    if (device.hasTouch) {
+      await fastButtonSwipe(page, name);
+      await page.evaluate(() => scrollTo(0, 0));
+    }
     await opening(page, name);
     await photoReady(page.locator(".stage-art"));
     const posterLink = page.getByRole("link", { name: /공연 포스터 크게 보기/ });

@@ -1,6 +1,7 @@
 """Build the isolated stage redesign from the current published HTML."""
 
 import argparse
+import hashlib
 from pathlib import Path
 import posixpath
 import re
@@ -84,7 +85,11 @@ def render(source, screen):
         shared += f'  <script src="{root}/vendor/ScrollTrigger.min.js" defer></script>\n'
         shared += f'  <script src="{root}/stage-motion.js" defer></script>\n'
     if screen in ("index.html", "scroll/index.html"):
-        shared += f'  <script src="{root}/poster-motion.js" defer></script>\n'
+        asset = "poster-motion.js"
+        if screen == "index.html":
+            digest = hashlib.sha256((DOCS / PREVIEW / asset).read_bytes()).hexdigest()[:12]
+            asset += f"?v={digest}"
+        shared += f'  <script src="{root}/{asset}" defer></script>\n'
     return source.replace("</head>", shared + "</head>", 1)
 
 
