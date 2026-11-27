@@ -49,6 +49,25 @@ async function noOverflow(page) {
   assert.ok(sizes.document <= sizes.screen + 1, JSON.stringify({ url: page.url(), ...sizes }));
 }
 
+async function checkButtonFonts(page) {
+  const session = await page.context().newCDPSession(page);
+  try {
+    await page.evaluate(() => document.fonts.ready);
+    await session.send("DOM.enable");
+    await session.send("CSS.enable");
+    const { root } = await session.send("DOM.getDocument");
+    for (const [selector, family] of [[".copy-31", "NanumMyeongjo"], [".copy-33", "Pretendard"]]) {
+      const { nodeId } = await session.send("DOM.querySelector", {nodeId: root.nodeId, selector});
+      const { fonts } = await session.send("CSS.getPlatformFontsForNode", {nodeId});
+      assert.ok(fonts.some(font => font.isCustomFont && font.glyphCount > 0 &&
+        font.familyName.replace(/\s/g, "").startsWith(family)),
+        JSON.stringify({selector, fonts}));
+    }
+  } finally {
+    await session.detach();
+  }
+}
+
 async function opening(page, name) {
   await page.waitForSelector(".poster-runway.is-animated");
   const sample = async fraction => {
@@ -203,6 +222,7 @@ async function testDevice(browser, name, device) {
     await page.getByRole("link", { name: /박정호/ }).click();
     await page.waitForURL("**/test/08.html");
     await photoReady(page.locator(".portrait-image"));
+    await checkButtonFonts(page);
     await noOverflow(page);
     await screenshot(page, name + "-profile");
 

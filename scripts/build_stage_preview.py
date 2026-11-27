@@ -80,6 +80,11 @@ def render(source, screen):
     stylesheet = "stage-cast.css" if is_cast else "stage-book.css"
     shared = f'  <link rel="stylesheet" href="{root}/stage.css">\n'
     shared += f'  <link rel="stylesheet" href="{root}/{stylesheet}">\n'
+    if not is_cast and not is_scroll:
+        source = re.sub(r'  <link rel="stylesheet" href="https://fonts\.googleapis\.com/css2\?[^"]+">\n', "", source)
+        shared += '  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin>\n'
+        shared += '  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&amp;display=swap">\n'
+        shared += f'  <link rel="stylesheet" href="{root}/button-type.css">\n'
     if screen == "index.html":
         shared += f'  <link rel="stylesheet" href="{root}/button-cover.css">\n'
     if is_scroll:

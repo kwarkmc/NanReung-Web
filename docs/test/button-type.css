@@ -1,0 +1,28 @@
+.stage-book {
+  --stage-sans: "Pretendard Variable", "Malgun Gothic", sans-serif;
+  --stage-serif: "Nanum Myeongjo", Batang, serif;
+}
+
+/* Override the font families baked into the exported program pages. */
+.stage-book :is(h1, h2, p, .layout-2) {
+  font-family: var(--stage-sans);
+}
+
+.stage-book :is(h1, h2, .copy-14, .copy-20, .copy-23, .copy-26, .copy-32, .copy-36, .layout-2 p) {
+  font-family: var(--stage-serif);
+}
+
+.stage-book :is(.copy-6, .copy-31, .copy-32) {
+  font-size: clamp(1.75rem, 4vw, 3.5rem);
+  line-height: 1.28;
+  letter-spacing: -.018em;
+}
+
+.stage-book :is(.copy-11, .book-prose, .copy-33, .layout-11, .layout-11 p, .copy-41) {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.stage-book .book-pagination p {
+  font-weight: 600;
+}
