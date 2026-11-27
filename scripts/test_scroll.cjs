@@ -21,6 +21,12 @@ async function position(page, element, viewportFraction) {
   await page.waitForTimeout(500);
 }
 
+async function checkWorkDescription(container) {
+  const paragraph = container.locator(".program-essay p").filter({ hasText: "토끼 동요" });
+  assert.doesNotMatch(await paragraph.textContent(), /<br\b/i);
+  assert.equal(await paragraph.locator("br + br").count(), 1);
+}
+
 async function testPhone(browser, device) {
   const context = await browser.newContext(devices[device]);
   try {
@@ -33,6 +39,7 @@ async function testPhone(browser, device) {
 
     assert.match(await page.locator('#page-03').innerText(), /트리거워닝/);
     assert.match(await page.locator('#page-05').innerText(), /가면 속 두 남자/);
+    await checkWorkDescription(page.locator('#page-05'));
     const heading = page.locator('#page-04 .chapter-header');
     const content = page.locator('#page-04 blockquote');
     await position(page, heading, 0.86);
@@ -114,6 +121,9 @@ async function testPhone(browser, device) {
     await page.getByRole('link', { name: /다음/ }).tap();
     await page.waitForURL(/04\.html$/, { waitUntil: 'domcontentloaded' });
     assert.match(await page.locator('h1').innerText(), /시놉시스/);
+    await page.getByRole('link', { name: /다음/ }).tap();
+    await page.waitForURL(/05\.html$/);
+    await checkWorkDescription(page.locator('main'));
 
     await page.goto(new URL('../02.html', url).href);
     assert.equal(await page.locator('.book-contents-link').count(), 19);
