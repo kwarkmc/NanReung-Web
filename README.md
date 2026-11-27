@@ -31,6 +31,19 @@ npx playwright install chromium
 node scripts/test_scroll.cjs
 ```
 
+## 캐스팅보드
+
+- [캐스팅보드](https://kwarkmc.github.io/NanReung-Web/casting/)에서 배우 카드를 눌러 프로필을 엽니다. 이전·다음 버튼으로 12명을 순환하며, 닫기 버튼이나 바깥 영역을 누르면 목록으로 돌아갑니다.
+- [스크롤 캐스팅보드](https://kwarkmc.github.io/NanReung-Web/casting/scroll/)에서 목록과 프로필을 세로로 읽습니다. 목록의 카드로 원하는 배우에게 바로 이동할 수 있습니다.
+
+두 경로는 `scripts/casting_data.json`에 정의된 배우 정보와 `docs/casting/assets/`의 Figma 이미지 에셋을 공유합니다. 내용을 바꾼 후 Python 3.12에서 HTML을 다시 생성하세요. 브라우저 테스트는 위의 Playwright 설치 명령을 사용합니다.
+
+```sh
+python scripts/build_casting.py
+python scripts/build_casting.py --check
+node scripts/test_casting.cjs
+```
+
 ## 배포
 
 `docs/`를 정적 호스팅의 공개 디렉터리로 사용합니다. Figma 원본의 임시 에셋 주소는 배포 파일에 포함하지 않습니다. 오프닝과 엔딩 영상, 연습 사진, 일부 본문은 Figma의 자리표시자를 반영합니다.
