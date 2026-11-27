@@ -49,3 +49,15 @@ node scripts/test_casting.cjs
 Figma 동기화 시 보존할 웹 변경과 배우별 사진 매핑은 [웹과 Figma 동기화](WEB_OVERRIDES.md)에 기록합니다.
 
 `docs/`를 정적 호스팅의 공개 디렉터리로 사용합니다. Figma 원본의 임시 에셋 주소는 배포 파일에 포함하지 않습니다. 오프닝과 엔딩 영상, 연습 사진, 일부 본문은 Figma의 자리표시자를 반영합니다.
+
+## 포스터 기반 디자인 테스트
+
+`/test/` 아래에서 기존 프로그램북과 캐스팅보드의 버튼판·스크롤판을 새 디자인으로 확인합니다. 원본 HTML을 수정했다면 다음 명령으로 테스트판도 갱신하세요. 테스트판은 같은 본문과 사진을 사용하고 상단에 네 경로를 오가는 메뉴를 추가합니다.
+
+```sh
+python scripts/build_stage_preview.py
+python scripts/build_stage_preview.py --check
+node scripts/test_stage_preview.cjs
+```
+
+Playwright 설치는 위의 명령을 사용합니다. 공개 사이트를 점검하려면 `node scripts/test_stage_preview.cjs https://kwarkmc.github.io/NanReung-Web`를 실행하세요.

@@ -1,0 +1,115 @@
+.stage-cast {
+  --cast-paper: var(--stage-paper);
+  --cast-surface: var(--stage-paper);
+  --cast-ink: var(--stage-paper-ink);
+  --cast-muted: var(--stage-paper-muted);
+  --cast-plum: #4e2629;
+  --cast-wine: #842c37;
+  --cast-rose: #c7a08a;
+  --cast-line: #cba992;
+}
+
+.stage-cast .casting-shell { width: min(100%, 1260px); }
+.stage-cast .cast-board {
+  padding: clamp(24px, 5vw, 68px) clamp(14px, 4vw, 64px) clamp(30px, 7vw, 88px);
+  min-height: calc(100svh - 64px);
+  background: transparent;
+}
+.stage-cast .cast-board::after { border-color: var(--stage-line); }
+.stage-cast .board-header { border-color: var(--stage-line); padding-bottom: clamp(12px, 4vw, 35px); }
+.stage-cast .board-header::after { height: 1px; background: var(--stage-vermilion); }
+.stage-cast .board-header p { color: #d7af9c; font-size: 13px; }
+.stage-cast .board-header h1 {
+  font: 600 clamp(2rem, 7.4vw, 5.8rem)/1.05 var(--stage-serif);
+  letter-spacing: -0.045em;
+  color: var(--stage-paper);
+}
+.stage-cast .header-brush { display: none; }
+.stage-cast .cast-board > h2 { color: var(--stage-bronze); font-size: 13px; margin-block: 19px 12px; }
+
+.stage-cast .cast-grid {
+  gap: 1px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 1px solid var(--stage-line);
+  background: var(--stage-line);
+}
+.stage-cast .cast-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: #2f1418;
+  color: var(--stage-paper);
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+.stage-cast .cast-card:active { background: #482127; }
+.stage-cast .cast-card:focus-visible { outline-offset: -3px; }
+.stage-cast .cast-card img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 5 / 6;
+  object-fit: cover;
+  object-position: 50% 38%;
+  border-radius: 0;
+  transition: transform 520ms cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+.stage-cast .card-copy { position: relative; padding: 8px 11px 12px; background: inherit; }
+.stage-cast .card-copy strong { font-size: clamp(17px, 2vw, 26px); line-height: 1.4; }
+.stage-cast .card-copy strong::after { background: var(--stage-vermilion); }
+.stage-cast .cast-card .card-copy > span {
+  color: #e0bfb0;
+  font-size: 12px;
+  line-height: 1.45;
+  font-family: var(--stage-sans);
+}
+.stage-cast .card-number { color: #ffe5d2; background: #271416; padding: 3px 5px; opacity: 1; }
+
+.stage-cast .cast-panel {
+  border-radius: 0;
+  border-top-width: 2px;
+  border-top-color: #9b403e;
+}
+.stage-cast .casting-dialog { width: min(calc(100% - 28px), 430px); }
+.stage-cast .cast-portrait { border-radius: 0; }
+.stage-cast .profile-header { color: #6f302f; }
+.stage-cast .cast-pagination { border-radius: 0; }
+
+.stage-cast .casting-dialog::backdrop { background-color: #200b0e; background-blend-mode: multiply; }
+.stage-cast .cast-scene {
+  padding: clamp(16px, 4vw, 56px);
+  border-top: 1px solid var(--stage-line);
+  background: #291014;
+}
+.stage-cast .cast-scene:nth-of-type(even) { background: #3b161a; }
+.stage-cast .cast-scene .cast-panel { width: min(100%, 460px); min-height: 0; }
+.stage-cast .cast-scene .cast-description { min-height: 0; }
+.stage-cast .cast-count { border-radius: 0; }
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .stage-cast .cast-card:hover { background: #462127; }
+  .stage-cast .cast-card:hover img { transform: scale(1.055); }
+}
+
+@media (min-width: 600px) {
+  .stage-cast .cast-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (min-width: 900px) {
+  .stage-cast .cast-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .stage-cast .cast-scene .cast-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto;
+    align-items: center;
+    column-gap: clamp(24px, 5vw, 72px);
+    padding: 24px clamp(24px, 4vw, 60px);
+    width: min(100%, 960px);
+  }
+  .stage-cast .cast-scene .profile-header { grid-column: 1 / -1; }
+  .stage-cast .cast-scene .cast-portrait { grid-area: 2 / 1 / 4 / 2; }
+  .stage-cast .cast-scene .cast-identity h2 { font-size: 50px; }
+  .stage-cast .cast-scene .cast-description { font-size: 16px; line-height: 1.55; }
+}

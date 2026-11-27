@@ -1,0 +1,229 @@
+.stage-book {
+  --paper: var(--stage-paper);
+  --ink: var(--stage-paper-ink);
+  --muted: var(--stage-paper-muted);
+  --wine: #7a2630;
+  --accent: #a1373c;
+  --line: #d6baaa;
+  --book-width: min(100%, 1080px);
+}
+
+.stage-book .book-page {
+  width: var(--book-width);
+  min-height: min(720px, calc(100svh - 64px));
+  gap: clamp(18px, 3.2vw, 36px);
+  padding: clamp(20px, 5vw, 72px);
+  margin-inline: auto;
+  align-items: stretch;
+  box-sizing: border-box;
+  background: var(--stage-paper);
+  color: var(--stage-paper-ink);
+}
+
+.stage-book.stage-scroll .book-page + .book-page { border-top: 1px solid #b99280; }
+.stage-book.stage-scroll .stage-profile:nth-of-type(even) { background: #ebd8c7; }
+.stage-book:not(.stage-scroll) .book-page { margin-block: clamp(0px, 2vw, 24px); }
+
+.stage-book :is(.chapter-header, .chapter-header-2, .editorial-header, .editorial-header-2, .editorial-header-3, .heading-layout, .heading-layout-2, .heading-layout-3, .heading-group, .heading-group-2, .heading-group-3, .heading-group-4) {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.stage-book :is(.heading-layout, .heading-layout-2, .heading-layout-3) { gap: 13px; }
+.stage-book :is(.heading-accent, .heading-accent-2) { width: 1px; height: auto; align-self: stretch; }
+.stage-book :is(.heading-rule, .heading-footer, .section-rule, .chapter-divider) { width: 100%; }
+.stage-book .heading-footer { display: none; }
+.stage-book :is(.copy-6, .copy-31, .copy-32) {
+  width: auto;
+  max-width: 100%;
+  color: var(--stage-paper-ink);
+  font: 700 clamp(1.85rem, 4.5vw, 4.25rem)/1.18 var(--stage-serif);
+  letter-spacing: -0.035em;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
+.stage-book .copy-30 { width: auto; color: #82433d; font-family: var(--stage-sans); font-size: 12px; }
+
+.stage-book :is(.chapter-content, .chapter-content-2) {
+  width: 100%;
+  min-width: 0;
+  gap: 16px;
+  overflow: visible;
+}
+
+.stage-book :is(.chapter-content, .chapter-content-2) > * { max-width: 100%; }
+.stage-book :is(.copy-11, .book-prose, .copy-33, .layout-11, .copy-41) {
+  width: auto;
+  max-width: 65ch;
+  color: var(--stage-paper-muted);
+  font-family: var(--stage-sans);
+  font-size: 15px;
+  line-height: 1.65;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.stage-book :is(.copy-23, .copy-36) { color: var(--stage-paper-ink); font: 700 1.35rem/1.4 var(--stage-serif); }
+.stage-book .layout-2 { width: 100%; }
+.stage-book .layout-2 :is(.copy-9, .copy-10) { color: var(--stage-paper-ink); font-size: clamp(1.2rem, 2.7vw, 2.2rem); }
+
+.stage-book .stage-contents .chapter-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  border-top: 1px solid #ac8372;
+}
+
+.stage-book .book-contents-link {
+  width: 100%;
+  height: auto;
+  min-height: 49px;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 4px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--stage-paper-ink);
+  transition: background 180ms ease, padding 180ms ease;
+}
+.stage-book a.book-contents-link:hover { background: #ead6c4; padding-inline-start: 10px; }
+.stage-book .book-contents-link[aria-current] { color: var(--wine); background: #ead6c4; }
+.stage-book .book-contents-link :is(.copy-7, .copy-8) { width: auto; font-size: 15px; }
+.stage-book .book-contents-link .copy-7 { min-width: 2.3ch; color: var(--wine); font-variant-numeric: tabular-nums; }
+.stage-book .book-contents-link .copy-8 { font-family: var(--stage-sans); color: inherit; }
+
+.stage-book .portrait-frame {
+  width: 100%;
+  height: auto;
+  max-width: 380px;
+  aspect-ratio: 4 / 5;
+  border: 1px solid #ac8372;
+  background: #32191a;
+}
+.stage-book .portrait-image { object-fit: contain; }
+
+.stage-book :is(.book-pagination, .scroll-footer) {
+  width: 100%;
+  height: auto;
+  margin-top: auto;
+  min-height: 46px;
+  border-block-start: 1px solid #b28a79;
+}
+.stage-book .book-page-link {
+  align-items: center;
+  height: 46px;
+  min-width: 0;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  transition: background 180ms ease;
+}
+.stage-book .book-page-link:hover { background: #e6cdbb; }
+.stage-book .book-pagination > div { width: auto; height: 46px; padding: 5px; }
+.stage-book .book-pagination p { width: auto; height: auto; min-width: 0; color: var(--stage-paper-ink); }
+
+.stage-book .stage-cover {
+  --cover-ink: #f9ede0;
+  max-width: 1240px;
+  width: 100%;
+  margin-block: 0;
+  min-height: calc(100svh - 64px);
+  background: radial-gradient(ellipse at 70% 44%, #41161b 0%, transparent 68%);
+  color: var(--cover-ink);
+}
+
+.stage-book .stage-cover :is(.cover-layout, .cover-content, .cover-heading, .copy-2) { width: 100%; height: auto; }
+.stage-book .stage-cover .cover-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+.stage-book .stage-cover .copy {
+  color: #d7af9c;
+  white-space: normal;
+  font-size: clamp(10px, 1.25vw, 15px);
+  line-height: 1.55;
+  word-break: keep-all;
+}
+.stage-book .stage-cover .copy-2 {
+  color: var(--cover-ink);
+  font: 700 clamp(3rem, 11vw, 8rem)/1 var(--stage-serif);
+  letter-spacing: -0.035em;
+}
+.stage-book .stage-cover .cover-rule { width: 62px; background: var(--stage-vermilion); }
+
+.stage-book :is(.stage-cover, #page-01) .motion-poster {
+  display: grid;
+  justify-items: center;
+  width: 100%;
+  height: auto;
+  gap: 9px;
+  padding: 0;
+  overflow: hidden;
+  background: transparent;
+}
+.stage-book .stage-cover .stage-art {
+  display: block;
+  width: auto;
+  height: clamp(265px, 56svh, 530px);
+  max-width: 100%;
+  object-fit: contain;
+  box-shadow: 0 16px 44px #0007;
+}
+.stage-book .stage-poster-link { display: block; max-width: 100%; }
+.stage-book .stage-cover .motion-poster .layout { display: none; }
+.stage-book .stage-cover .copy-3 { width: 100%; color: #d7af9c; font-size: 12px; }
+.stage-book .stage-cover :is(.book-pagination, .scroll-footer) { border-color: var(--stage-line); }
+.stage-book .stage-cover :is(.book-pagination p, .scroll-action) { color: var(--cover-ink); }
+.stage-book .stage-cover .book-page-link:hover { background: #401d22; }
+.stage-book .stage-cover .book-page-link:last-child { background: #74232c; }
+.stage-book .stage-cover .book-page-link:last-child:hover { background: #90313b; }
+
+.stage-book .stage-closing {
+  max-width: 1080px;
+  background: #351316;
+  color: var(--stage-paper);
+}
+.stage-book .stage-closing .layout-16 { width: 100%; height: auto; }
+.stage-book .stage-closing .layout-17 { max-width: 100%; }
+.stage-book .stage-closing .motion-poster-2 {
+  width: 100%;
+  height: clamp(180px, 36svh, 340px);
+  background: radial-gradient(ellipse at 68% 20%, #702931, #1d0a0d 72%);
+}
+.stage-book .stage-closing :is(.copy-42, .copy-43, .copy-44, .copy-46, .copy-47, .book-pagination p, .scroll-footer, .scroll-action) { color: var(--stage-paper); }
+.stage-book .stage-closing :is(.copy-42, .copy-45, .copy-46, .epilogue-label) { max-width: 100%; }
+.stage-book .stage-closing .book-page-link:hover { background: #54272d; }
+
+@media (min-width: 760px) {
+  .stage-book .stage-cover .cover-content {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    grid-template-rows: 1fr auto auto 1fr;
+    align-items: start;
+    column-gap: clamp(28px, 8vw, 120px);
+  }
+  .stage-book .stage-cover .copy { grid-row: 2; }
+  .stage-book .stage-cover .cover-heading { grid-row: 3; }
+  .stage-book .stage-cover .cover-rule { grid-row: 4; margin-top: 24px; }
+  .stage-book .stage-cover .motion-poster { grid-area: 1 / 2 / 5 / 3; }
+  .stage-book .stage-cover .stage-art { height: clamp(400px, 69svh, 690px); }
+  .stage-book .stage-contents .chapter-content { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 32px; }
+  .stage-book .stage-profile .chapter-content-2 {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    column-gap: clamp(24px, 6vw, 92px);
+    align-items: start;
+    grid-template-rows: auto auto auto auto 1fr;
+  }
+  .stage-book .stage-profile .portrait-frame { grid-area: 1 / 1 / 6 / 2; }
+  .stage-book .stage-profile .chapter-content-2 > :not(.portrait-frame) { grid-column: 2; }
+}
+
+@media (max-width: 759px) and (max-height: 570px) {
+  .stage-book .stage-cover { padding-block: 14px; gap: 12px; }
+  .stage-book .stage-cover .cover-content { gap: 8px; }
+  .stage-book .stage-cover .copy-2 { font-size: 46px; }
+  .stage-book .stage-cover .stage-art { height: clamp(170px, 44svh, 252px); }
+}

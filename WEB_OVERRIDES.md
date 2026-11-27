@@ -26,3 +26,9 @@
 | 배준모 | _06 | 10 | 17 |
 | 유이현 | _05 | 11 | 19 |
 | 이효림 | _07 | 12 | 18 |
+
+## 포스터 기반 테스트판
+
+테스트판은 `docs/test/`에 격리한다. `scripts/build_stage_preview.py`가 운영 HTML의 본문·동선을 가져오므로, Figma를 동기화해도 테스트판의 스타일과 연출은 `docs/test/stage*.css`, `stage-motion.js`에서 유지한다. `poster.webp`는 사용자가 제공한 `포스터.png`를 화면용으로 줄인 이미지다. 표지와 캐스팅의 적색·청동색, 본문의 따뜻한 종이색은 이 포스터에서 가져왔다.
+
+스크롤판의 포스터 이동과 장별 등장은 고정된 GSAP 3.14.2와 ScrollTrigger로 구현한다. 두 라이브러리는 `docs/test/vendor/`에 있으며 배포 파일 헤더의 [GSAP 라이선스](https://gsap.com/standard-license/)가 적용된다.
