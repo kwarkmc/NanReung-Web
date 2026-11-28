@@ -24,7 +24,30 @@ async function position(page, element, viewportFraction) {
 async function checkWorkDescription(container) {
   const paragraph = container.locator(".program-essay p").filter({ hasText: "토끼 동요" });
   assert.doesNotMatch(await paragraph.textContent(), /<br\b/i);
-  assert.equal(await paragraph.locator("br + br").count(), 1);
+  assert.equal(await paragraph.locator("br").count(), 1);
+}
+
+async function checkHangulFont(page, selector, expected) {
+  const target = page.locator(selector);
+  assert.match((await target.textContent()).trim(), /^[가-힣\s]+$/u);
+  await target.scrollIntoViewIfNeeded();
+  await target.evaluate(async node => {
+    const style = getComputedStyle(node);
+    await document.fonts.load(`${style.fontWeight} ${style.fontSize} ${style.fontFamily}`, node.textContent.trim());
+  });
+  const cdp = await page.context().newCDPSession(page);
+  try {
+    await cdp.send('DOM.enable');
+    await cdp.send('CSS.enable');
+    const {root} = await cdp.send('DOM.getDocument');
+    const {nodeId} = await cdp.send('DOM.querySelector', {nodeId: root.nodeId, selector});
+    const {fonts} = await cdp.send('CSS.getPlatformFontsForNode', {nodeId});
+    assert.ok(fonts.length && fonts.every(font => font.isCustomFont &&
+      font.familyName.replace(/\s/g, '').startsWith(expected)), JSON.stringify({selector, fonts}));
+    console.log(`${selector}: ${fonts.map(font => font.familyName).join(', ')} rendered the Hangul glyphs`);
+  } finally {
+    await cdp.detach();
+  }
 }
 
 async function testPhone(browser, device) {
@@ -118,6 +141,12 @@ async function testPhone(browser, device) {
     assert.deepEqual(errors, []);
     await page.goto(new URL('../03.html', url).href, { waitUntil: 'domcontentloaded' });
     assert.match(await page.locator('h1').innerText(), /트리거워닝/);
+    assert.equal(await page.locator('.program-notice li').count(), 5);
+    await checkHangulFont(page, '.program-notice > p:first-of-type', 'Pretendard');
+    await page.locator('.book-pagination a.program-toc').tap();
+    await page.waitForURL(/02\.html$/);
+    await page.locator('a.book-contents-link[href="03.html"]').tap();
+    await page.waitForURL(/03\.html$/);
     await page.getByRole('link', { name: /다음/ }).tap();
     await page.waitForURL(/04\.html$/, { waitUntil: 'domcontentloaded' });
     assert.match(await page.locator('h1').innerText(), /시놉시스/);
@@ -140,8 +169,12 @@ async function testPhone(browser, device) {
     await page.getByRole('link', {name: /다음/}).tap();
     await page.waitForURL(target => !/\/19\.html$/.test(target.pathname));
     await page.locator('.program-poster').evaluate(img => img.decode());
+    await checkHangulFont(page, '.program-intro h1', 'NanumMyeongjo');
     await page.getByRole('link', {name: /이전/}).tap();
     await page.waitForURL(/19\.html$/);
+    await page.goto(url, { waitUntil: 'domcontentloaded' });
+    await checkHangulFont(page, '.program-intro h1', 'NanumMyeongjo');
+    await checkHangulFont(page, '#page-03 .program-notice > p:first-of-type', 'Pretendard');
     console.log(`${device}: opacity ${halfway.opacity.toFixed(2)} at halfway, 1 at three quarters; touch swipe, reverse scroll, reduced motion, and profile link passed`);
   } finally {
     await context.close();

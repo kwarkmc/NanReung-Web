@@ -55,6 +55,8 @@ def build():
             footer = '<a class="scroll-action" href="#page-02">아래로 스크롤 <span aria-hidden="true">↓</span></a>'
         elif number == len(PAGES):
             footer = '<a class="scroll-action" href="#page-02">목차로 돌아가기</a>' + footer
+        elif number != 2:
+            footer = '<a class="scroll-action" href="#page-02">목차</a>' + footer
         sections.append(
             f'    <section class="{classes}" id="{page_id}" aria-labelledby="title-{number:02}" tabindex="-1">'
             f'{content.rstrip()}\n      <footer class="scroll-footer">{footer}</footer>\n    </section>'
